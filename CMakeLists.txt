@@ -14,9 +14,6 @@ cmake_minimum_required(VERSION 3.10)
 #  hence why we call it first)
 project(matrices LANGUAGES CXX)
 
-# Policy that OpenGL asks for
-cmake_policy(SET CMP0072 NEW)
-
 # Include paths
 include_directories(include)
 
