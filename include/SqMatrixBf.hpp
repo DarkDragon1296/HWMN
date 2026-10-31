@@ -71,6 +71,26 @@ class SqMatrixBf {
             }
         }
     }
+
+    SqMatrixBf operator-(const SqMatrixBf &mat) const {
+        SqMatrixBf<T> res_mat(n, {});
+
+        for (int i = 0; i < static_cast<int>(n); i++) { 
+            for (int j = 0; j < static_cast<int>(n); j++) {
+                res_mat[i][j] = (*this)[i][j] - mat[i][j];
+            }
+        }
+
+        return res_mat;
+    }
+
+    void operator-=(const SqMatrixBf &mat) {
+        for (int i = 0; i < static_cast<int>(n); i++) { 
+            for (int j = 0; j < static_cast<int>(n); j++) {
+                (*this)[i][j] -= mat[i][j];
+            }
+        }
+    }
 };
 
 template <typename T>
