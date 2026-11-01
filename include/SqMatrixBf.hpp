@@ -12,14 +12,6 @@ class SqMatrixBf {
 
     SqMatrixBf(size_t n_, std::vector<T> &&data_ = T{});
 
-#if 0
-    SqMatrixBf(const SqMatrixBf &rhs) = default;
-    SqMatrixBf(SqMatrixBf &&rhs) noexcept;
-    SqMatrixBf &operator=(const SqMatrixBf &rhs) = default;
-    SqMatrixBf &operator=(SqMatrixBf &&rhs) noexcept;
-    ~SqMatrixBf();
-#endif
-
     class ProxyRow {
         typename std::vector<T>::iterator row_data;
         public:

@@ -7,33 +7,6 @@ SqMatrixBf<T>::SqMatrixBf(size_t n_, std::vector<T> &&data_) :
     data.resize(n * n);
 };
 
-#if 0
-template <typename T>
-SqMatrixBf<T>::SqMatrixBf(SqMatrixBf &&rhs) noexcept : n{rhs.n},
-                                                       data{std::move(rhs.data)}
-{
-    rhs.n = 0;
-}
-
-template <typename T>
-SqMatrixBf<T> &SqMatrixBf<T>::operator=(SqMatrixBf &&rhs) noexcept {
-    if (this == &rhs)
-        return *this;
-
-    n = rhs.n;
-    data.clear();
-    data = std::move(rhs.data);
-
-    return *this;
-}
-
-template <typename T>
-SqMatrixBf<T>::~SqMatrixBf() {
-    data.clear();
-    std::vector<T>().swap(data);
-}
-#endif
-
 template <typename T>
 SqMatrixBf<T> SqMatrixBf<T>::operator+(const SqMatrixBf &mat) const {
     SqMatrixBf<T> res_mat(n, {});
