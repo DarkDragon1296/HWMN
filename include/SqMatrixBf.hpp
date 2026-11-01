@@ -56,8 +56,12 @@ class SqMatrixBf {
 
     SqMatrixBf operator+(const SqMatrixBf &mat) const;
     SqMatrixBf operator-(const SqMatrixBf &mat) const;
+    SqMatrixBf operator*(const SqMatrixBf &mat) const;
+    SqMatrixBf operator*(const T &value) const;
     void operator+=(const SqMatrixBf &mat);
     void operator-=(const SqMatrixBf &mat);
+    void operator*=(const SqMatrixBf &mat);
+    void operator*=(const T &value);
 };
 
 template <typename T>
@@ -95,6 +99,32 @@ SqMatrixBf<T> SqMatrixBf<T>::operator-(const SqMatrixBf &mat) const {
 }
 
 template <typename T>
+SqMatrixBf<T> SqMatrixBf<T>::operator*(const SqMatrixBf &mat) const {
+    SqMatrixBf<T> res_mat(n, {});
+
+    for (int i = 0; i < static_cast<int>(n); i++) { 
+        for (int j = 0; j < static_cast<int>(n); j++) {
+            res_mat[i][j] = (*this)[i][j] * mat[i][j];
+        }
+    }
+
+    return res_mat;
+}
+
+template <typename T> // TODO: fix proplem of x * mat
+SqMatrixBf<T> SqMatrixBf<T>::operator*(const T &value) const {
+    SqMatrixBf<T> res_mat(n, {});
+
+    for (int i = 0; i < static_cast<int>(n); i++) { 
+        for (int j = 0; j < static_cast<int>(n); j++) {
+            res_mat[i][j] = (*this)[i][j] * value;
+        }
+    }
+
+    return res_mat;
+}
+
+template <typename T>
 void SqMatrixBf<T>::operator+=(const SqMatrixBf &mat) {
     for (int i = 0; i < static_cast<int>(n); i++) { 
         for (int j = 0; j < static_cast<int>(n); j++) {
@@ -108,6 +138,24 @@ void SqMatrixBf<T>::operator-=(const SqMatrixBf &mat) {
     for (int i = 0; i < static_cast<int>(n); i++) { 
         for (int j = 0; j < static_cast<int>(n); j++) {
             (*this)[i][j] -= mat[i][j];
+        }
+    }
+}
+
+template <typename T>
+void SqMatrixBf<T>::operator*=(const SqMatrixBf &mat) {
+    for (int i = 0; i < static_cast<int>(n); i++) { 
+        for (int j = 0; j < static_cast<int>(n); j++) {
+            (*this)[i][j] *= mat[i][j];
+        }
+    }
+}
+
+template <typename T>
+void SqMatrixBf<T>::operator*=(const T &value) {
+    for (int i = 0; i < static_cast<int>(n); i++) { 
+        for (int j = 0; j < static_cast<int>(n); j++) {
+            (*this)[i][j] *= value;
         }
     }
 }
