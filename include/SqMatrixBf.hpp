@@ -12,14 +12,20 @@ class SqMatrixBf {
 
     SqMatrixBf(size_t n_, std::vector<T> &&data_ = T{});
 
+    SqMatrixBf(const SqMatrixBf &rhs) = default;
+    SqMatrixBf(SqMatrixBf &&rhs) noexcept;
+    SqMatrixBf &operator=(const SqMatrixBf &rhs) = default;
+    SqMatrixBf &operator=(SqMatrixBf &&rhs) noexcept;
+    ~SqMatrixBf();
+
     size_t size() const {
         return n;
     }
 
-    class RowProxy {
+    class ProxyRow {
         typename std::vector<T>::iterator row_data;
         public:
-        RowProxy(typename std::vector<T>::iterator row_) : row_data{row_} {}
+        ProxyRow(typename std::vector<T>::iterator row_) : row_data{row_} {}
 
         T &operator[](int col) {
             return *(row_data + col);
@@ -30,10 +36,10 @@ class SqMatrixBf {
         }
     };
 
-    class ConstRowProxy {
+    class ConstProxyRow {
         typename std::vector<T>::const_iterator row_data;
         public:
-        ConstRowProxy(typename std::vector<T>::const_iterator row_) :
+        ConstProxyRow(typename std::vector<T>::const_iterator row_) :
                       row_data{row_} {}
 
         T &operator[](int col) {
@@ -45,12 +51,12 @@ class SqMatrixBf {
         }
     };
 
-    RowProxy operator[](int row) {
-        return RowProxy(std::next(data.begin(), static_cast<int>(n) * row));
+    ProxyRow operator[](int row) {
+        return ProxyRow(std::next(data.begin(), static_cast<int>(n) * row));
     }
 
-    const ConstRowProxy operator[](int row) const {
-        return ConstRowProxy(std::next(data.cbegin(),
+    const ConstProxyRow operator[](int row) const {
+        return ConstProxyRow(std::next(data.cbegin(),
                                        static_cast<int>(n) * row));
     }
 
@@ -62,6 +68,8 @@ class SqMatrixBf {
     void operator-=(const SqMatrixBf &mat);
     void operator*=(const SqMatrixBf &mat);
     void operator*=(const T &value);
+
+    void transpose(void);
 };
 
 #include "SqMatrixBf.tpp"
