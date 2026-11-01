@@ -33,7 +33,8 @@ class SqMatrixBf {
     class ConstRowProxy {
         typename std::vector<T>::const_iterator row_data;
         public:
-        ConstRowProxy(typename std::vector<T>::const_iterator row_) : row_data{row_} {}
+        ConstRowProxy(typename std::vector<T>::const_iterator row_) :
+                      row_data{row_} {}
 
         T &operator[](int col) {
             return *(row_data + col);
@@ -49,48 +50,14 @@ class SqMatrixBf {
     }
 
     const ConstRowProxy operator[](int row) const {
-        return ConstRowProxy(std::next(data.cbegin(), static_cast<int>(n) * row));
+        return ConstRowProxy(std::next(data.cbegin(),
+                                       static_cast<int>(n) * row));
     }
 
-    SqMatrixBf operator+(const SqMatrixBf &mat) const {
-        SqMatrixBf<T> res_mat(n, {});
-
-        for (int i = 0; i < static_cast<int>(n); i++) { 
-            for (int j = 0; j < static_cast<int>(n); j++) {
-                res_mat[i][j] = (*this)[i][j] + mat[i][j];
-            }
-        }
-
-        return res_mat;
-    }
-
-    void operator+=(const SqMatrixBf &mat) {
-        for (int i = 0; i < static_cast<int>(n); i++) { 
-            for (int j = 0; j < static_cast<int>(n); j++) {
-                (*this)[i][j] += mat[i][j];
-            }
-        }
-    }
-
-    SqMatrixBf operator-(const SqMatrixBf &mat) const {
-        SqMatrixBf<T> res_mat(n, {});
-
-        for (int i = 0; i < static_cast<int>(n); i++) { 
-            for (int j = 0; j < static_cast<int>(n); j++) {
-                res_mat[i][j] = (*this)[i][j] - mat[i][j];
-            }
-        }
-
-        return res_mat;
-    }
-
-    void operator-=(const SqMatrixBf &mat) {
-        for (int i = 0; i < static_cast<int>(n); i++) { 
-            for (int j = 0; j < static_cast<int>(n); j++) {
-                (*this)[i][j] -= mat[i][j];
-            }
-        }
-    }
+    SqMatrixBf operator+(const SqMatrixBf &mat) const;
+    SqMatrixBf operator-(const SqMatrixBf &mat) const;
+    void operator+=(const SqMatrixBf &mat);
+    void operator-=(const SqMatrixBf &mat);
 };
 
 template <typename T>
@@ -99,3 +66,48 @@ SqMatrixBf<T>::SqMatrixBf(size_t n_, std::vector<T> &&data_) :
 {
     data.resize(n * n);
 };
+
+
+template <typename T>
+SqMatrixBf<T> SqMatrixBf<T>::operator+(const SqMatrixBf &mat) const {
+    SqMatrixBf<T> res_mat(n, {});
+
+    for (int i = 0; i < static_cast<int>(n); i++) { 
+        for (int j = 0; j < static_cast<int>(n); j++) {
+            res_mat[i][j] = (*this)[i][j] + mat[i][j];
+        }
+    }
+
+    return res_mat;
+}
+
+template <typename T>
+SqMatrixBf<T> SqMatrixBf<T>::operator-(const SqMatrixBf &mat) const {
+    SqMatrixBf<T> res_mat(n, {});
+
+    for (int i = 0; i < static_cast<int>(n); i++) { 
+        for (int j = 0; j < static_cast<int>(n); j++) {
+            res_mat[i][j] = (*this)[i][j] - mat[i][j];
+        }
+    }
+
+    return res_mat;
+}
+
+template <typename T>
+void SqMatrixBf<T>::operator+=(const SqMatrixBf &mat) {
+    for (int i = 0; i < static_cast<int>(n); i++) { 
+        for (int j = 0; j < static_cast<int>(n); j++) {
+            (*this)[i][j] += mat[i][j];
+        }
+    }
+}
+
+template <typename T>
+void SqMatrixBf<T>::operator-=(const SqMatrixBf &mat) {
+    for (int i = 0; i < static_cast<int>(n); i++) { 
+        for (int j = 0; j < static_cast<int>(n); j++) {
+            (*this)[i][j] -= mat[i][j];
+        }
+    }
+}
