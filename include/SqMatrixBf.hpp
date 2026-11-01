@@ -12,15 +12,13 @@ class SqMatrixBf {
 
     SqMatrixBf(size_t n_, std::vector<T> &&data_ = T{});
 
+#if 0
     SqMatrixBf(const SqMatrixBf &rhs) = default;
     SqMatrixBf(SqMatrixBf &&rhs) noexcept;
     SqMatrixBf &operator=(const SqMatrixBf &rhs) = default;
     SqMatrixBf &operator=(SqMatrixBf &&rhs) noexcept;
     ~SqMatrixBf();
-
-    size_t size() const {
-        return n;
-    }
+#endif
 
     class ProxyRow {
         typename std::vector<T>::iterator row_data;
@@ -60,6 +58,10 @@ class SqMatrixBf {
                                        static_cast<int>(n) * row));
     }
 
+    size_t size() const {
+        return n;
+    }
+
     SqMatrixBf operator+(const SqMatrixBf &mat) const;
     SqMatrixBf operator-(const SqMatrixBf &mat) const;
     SqMatrixBf operator*(const SqMatrixBf &mat) const;
@@ -69,7 +71,12 @@ class SqMatrixBf {
     void operator*=(const SqMatrixBf &mat);
     void operator*=(const T &value);
 
-    void transpose(void);
+    SqMatrixBf transpose(void);
+    SqMatrixBf neg(void);
+    SqMatrixBf inverse(void);
+
+    void swap_rows(int i, int j);
+    void swap_cols(int i, int j);
 };
 
 #include "SqMatrixBf.tpp"
