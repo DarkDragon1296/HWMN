@@ -4,7 +4,7 @@
 #include <vector> // TODO: write our version
 
 template <typename T>
-class SqMatrixBf {
+class SqMatrixBf final {
     size_t n;
     std::vector<T> data;
 
@@ -47,7 +47,7 @@ class SqMatrixBf {
 
     const ConstProxyRow operator[](int row) const {
         return ConstProxyRow(std::next(data.cbegin(),
-                                       static_cast<int>(n) * row));
+                             static_cast<int>(n) * row));
     }
 
     size_t size() const {
@@ -56,19 +56,18 @@ class SqMatrixBf {
 
     SqMatrixBf operator+(const SqMatrixBf &mat) const;
     SqMatrixBf operator-(const SqMatrixBf &mat) const;
-    SqMatrixBf operator*(const SqMatrixBf &mat) const;
     SqMatrixBf operator*(const T &value) const;
+
     void operator+=(const SqMatrixBf &mat);
     void operator-=(const SqMatrixBf &mat);
-    void operator*=(const SqMatrixBf &mat);
     void operator*=(const T &value);
+
+    void swap_rows(int i, int j);
+    void swap_cols(int i, int j);
 
     SqMatrixBf transpose(void);
     SqMatrixBf neg(void);
     SqMatrixBf inverse(void);
-
-    void swap_rows(int i, int j);
-    void swap_cols(int i, int j);
 };
 
 #include "SqMatrixBf.tpp"

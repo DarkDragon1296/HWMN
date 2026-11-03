@@ -4,7 +4,7 @@
 #include <vector>
 
 template <typename T>
-class SqMatrixJg {
+class SqMatrixJg final {
     size_t n;
     std::vector<std::vector<T>> data{};
 

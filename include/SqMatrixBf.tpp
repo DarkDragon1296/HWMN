@@ -29,19 +29,6 @@ SqMatrixBf<T> SqMatrixBf<T>::operator-(const SqMatrixBf &mat) const {
     return res_mat;
 }
 
-template <typename T>
-SqMatrixBf<T> SqMatrixBf<T>::operator*(const SqMatrixBf &mat) const {
-    SqMatrixBf<T> res_mat(n, {});
-    for (int i = 0; i < static_cast<int>(n); i++) { 
-        for (int j = 0; j < static_cast<int>(n); j++) {
-            for (int l = 0; l < static_cast<int>(n); l++) {
-                res_mat[i][j] += (*this)[i][l] * mat[l][j];
-            }
-        }
-    }
-    return res_mat;
-}
-
 template <typename T> // TODO: fix proplem of x * mat
 SqMatrixBf<T> SqMatrixBf<T>::operator*(const T &value) const {
     SqMatrixBf<T> res_mat(n, {});
@@ -69,14 +56,6 @@ void SqMatrixBf<T>::operator-=(const SqMatrixBf &mat) {
             (*this)[i][j] -= mat[i][j];
         }
     }
-}
-
-template <typename T> // TODO: fix =
-void SqMatrixBf<T>::operator*=(const SqMatrixBf &mat) {
-    SqMatrixBf<T> res_mat(n, {});
-
-    res_mat = (*this) * mat;
-    (*this) = res_mat;
 }
 
 template <typename T>
