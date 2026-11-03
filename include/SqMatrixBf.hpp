@@ -70,8 +70,9 @@ class SqMatrixBf final {
     SqMatrixBf mul(const SqMatrixBf &mat);
     SqMatrixBf transpose(void);
     SqMatrixBf neg(void);
-    SqMatrixBf inverse(void);
-    T det(void);
+    T tr(void);
+    T det_gauss(void);
+    T det_recursion(void);
 };
 
 template <typename T>

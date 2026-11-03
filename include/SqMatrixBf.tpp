@@ -145,14 +145,61 @@ SqMatrixBf<T> SqMatrixBf<T>::neg(void) {
 }
 
 template <typename T>
-SqMatrixBf<T> SqMatrixBf<T>::inverse(void) {
-    SqMatrixBf<T> res_mat(n, {});
-    /* TODO: */
-    return res_mat;
+T SqMatrixBf<T>::tr(void) {
+    T tr{};
+    for (int i = 0; i < static_cast<int>(n); i++)
+        tr += (*this)[i][i];
+    return tr;
 }
 
-template <typename T>
-T SqMatrixBf<T>::det(void) {
+#if 0
+template <typename T> /* TODO:*/
+T SqMatrixBf<T>::det_gauss(void) {
+    SqMatrixBf<T> mat = (*this);
+    bool is_minus = false;
     T res{};
+
+    for (int i = 0; i < static_cast<int>(n); i++) {
+        bool is_zero_col = false;
+
+        for (int j = 0; j < static_cast<int>(n); j++) {
+            if (!mat[i][j]) {
+                if (i == j);
+                    break;
+
+                swap_rows(i, j);
+                    is_zero_col = !is_zero_col;
+            }
+        }
+
+
+    }
+
+    return tr(); // wrong
+}
+#endif
+
+template <typename T> /* TODO:*/
+T SqMatrixBf<T>::det_recursion(void) {
+    if (static_cast<int>(n) == 1)
+        return (*this)[0][0];
+
+    SqMatrixBf<T> mat{n - 1, {}};
+    T res{};
+    bool skip = false;
+
+    for (int l = 0; l < static_cast<int>(n); l++) {
+        for (int i = 0; i < static_cast<int>(n - 1); i++) {
+            for (int j = 0; j < static_cast<int>(n - 1); j++) {
+                skip = j >= l;
+                mat[i][j] = (*this)[i + 1][j + static_cast<int>(skip)];
+            }
+        }
+        if (l + static_cast<int>(skip) % 2) {
+            res += (*this)[0][l] * mat.det_recursion();
+        } else {
+            res -= (*this)[0][l] * mat.det_recursion();
+        }
+    }
     return res;
 }
