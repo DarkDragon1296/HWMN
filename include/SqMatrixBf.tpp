@@ -29,12 +29,29 @@ SqMatrixBf<T> SqMatrixBf<T>::operator-(const SqMatrixBf &mat) const {
     return res_mat;
 }
 
-template <typename T> // TODO: fix proplem of x * mat
+template <typename T>
 SqMatrixBf<T> SqMatrixBf<T>::operator*(const T &value) const {
     SqMatrixBf<T> res_mat(n, {});
     for (int i = 0; i < static_cast<int>(n); i++) { 
         for (int j = 0; j < static_cast<int>(n); j++) {
             res_mat[i][j] = (*this)[i][j] * value;
+        }
+    }
+    return res_mat;
+}
+
+
+template <typename T>
+SqMatrixBf<T> operator*(const T &value, const SqMatrixBf<T> &mat) {
+    return mat * value;
+}
+
+template <typename T>
+SqMatrixBf<T> SqMatrixBf<T>::operator/(const T &value) const {
+    SqMatrixBf<T> res_mat(n, {});
+    for (int i = 0; i < static_cast<int>(n); i++) { 
+        for (int j = 0; j < static_cast<int>(n); j++) {
+            res_mat[i][j] = (*this)[i][j] / value;
         }
     }
     return res_mat;
@@ -68,6 +85,48 @@ void SqMatrixBf<T>::operator*=(const T &value) {
 }
 
 template <typename T>
+void SqMatrixBf<T>::operator/=(const T &value) {
+    for (int i = 0; i < static_cast<int>(n); i++) { 
+        for (int j = 0; j < static_cast<int>(n); j++) {
+            (*this)[i][j] /= value;
+        }
+    }
+}
+
+template <typename T>
+void SqMatrixBf<T>::swap_rows(int i, int j) {
+    T tmp;
+    for (int l = 0; l < static_cast<int>(n); l++) {
+        tmp = (*this)[i][l];
+        (*this)[i][l] = (*this)[j][l];
+        (*this)[j][l] = tmp;
+    }
+}
+
+template <typename T>
+void SqMatrixBf<T>::swap_cols(int i, int j) {
+    T tmp;
+    for (int l = 0; l < static_cast<int>(n); l++) {
+        tmp = (*this)[l][i];
+        (*this)[l][i] = (*this)[l][j];
+        (*this)[l][j] = tmp;
+    }
+}
+
+template <typename T>
+SqMatrixBf<T> SqMatrixBf<T>::mul(const SqMatrixBf<T> &mat) {
+    SqMatrixBf<T> res_mat(n, {});
+    for (int i = 0; i < static_cast<int>(n); i++) { 
+        for (int j = 0; j < static_cast<int>(n); j++) {
+            for (int l = 0; l < static_cast<int>(n); l++) {
+                res_mat[i][j] += (*this)[i][l] * mat[l][j];
+            }
+        }
+    }
+    return res_mat;
+}
+
+template <typename T>
 SqMatrixBf<T> SqMatrixBf<T>::transpose(void) {
     SqMatrixBf<T> res_mat(n, {});
     for (int i = 0; i < static_cast<int>(n); i++) { 
@@ -93,21 +152,7 @@ SqMatrixBf<T> SqMatrixBf<T>::inverse(void) {
 }
 
 template <typename T>
-void SqMatrixBf<T>::swap_rows(int i, int j) {
-    T tmp;
-    for (int l = 0; l < static_cast<int>(n); l++) {
-        tmp = (*this)[i][l];
-        (*this)[i][l] = (*this)[j][l];
-        (*this)[j][l] = tmp;
-    }
-}
-
-template <typename T>
-void SqMatrixBf<T>::swap_cols(int i, int j) {
-    T tmp;
-    for (int l = 0; l < static_cast<int>(n); l++) {
-        tmp = (*this)[l][i];
-        (*this)[l][i] = (*this)[l][j];
-        (*this)[l][j] = tmp;
-    }
+T SqMatrixBf<T>::det(void) {
+    T res{};
+    return res;
 }

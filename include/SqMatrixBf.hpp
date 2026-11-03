@@ -57,17 +57,24 @@ class SqMatrixBf final {
     SqMatrixBf operator+(const SqMatrixBf &mat) const;
     SqMatrixBf operator-(const SqMatrixBf &mat) const;
     SqMatrixBf operator*(const T &value) const;
+    SqMatrixBf operator/(const T &value) const;
 
     void operator+=(const SqMatrixBf &mat);
     void operator-=(const SqMatrixBf &mat);
     void operator*=(const T &value);
+    void operator/=(const T &value);
 
     void swap_rows(int i, int j);
     void swap_cols(int i, int j);
 
+    SqMatrixBf mul(const SqMatrixBf &mat);
     SqMatrixBf transpose(void);
     SqMatrixBf neg(void);
     SqMatrixBf inverse(void);
+    T det(void);
 };
+
+template <typename T>
+SqMatrixBf<T> operator*(const T &value, const SqMatrixBf<T> &mat);
 
 #include "SqMatrixBf.tpp"
