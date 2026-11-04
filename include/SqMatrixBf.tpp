@@ -114,7 +114,53 @@ void SqMatrixBf<T>::swap_cols(int i, int j) {
 }
 
 template <typename T>
-SqMatrixBf<T> SqMatrixBf<T>::mul(const SqMatrixBf<T> &mat) {
+int SqMatrixBf<T>::max_row_elem_index(int row) const {
+    int index = 0;
+    for (int col = 1; col < static_cast<int>(n); col++) {
+        T i_value = (*this)[row][index];
+        T e_value = (*this)[row][col];
+        i_value *= i_value >= 0 ? 1 : -1;
+        e_value *= e_value >= 0 ? 1 : -1;
+
+        if (i_value > e_value)
+            index = col;
+    }
+    return index;
+}
+
+template <typename T>
+int SqMatrixBf<T>::max_col_elem_index(int col) const {
+    int index = 0;
+    for (int row = 1; row < static_cast<int>(n); row++) {
+        T i_value = (*this)[index][col];
+        T e_value = (*this)[row  ][col];
+        i_value *= i_value >= 0 ? 1 : -1;
+        e_value *= e_value >= 0 ? 1 : -1;
+
+        if (i_value > e_value)
+            index = row;
+    }
+    return index;
+}
+
+template <typename T>
+SqMatrixBf<T> SqMatrixBf<T>::minor(int row, int col) const {
+    SqMatrixBf res_mat{n - 1, {}};
+    int sz = static_cast<int>(n);
+
+    for (int i = 0; i < sz - 1; i++) {
+        for (int j = 0; j < sz - 1; j++) {
+            int is_col_skip = j >= col;
+            int is_row_skip = i >= row;
+            res_mat[i][j] = (*this)[i + is_row_skip][j + is_col_skip];
+        }
+    }
+
+    return res_mat;
+}
+
+template <typename T>
+SqMatrixBf<T> SqMatrixBf<T>::mul(const SqMatrixBf<T> &mat) const {
     SqMatrixBf<T> res_mat(n, {});
     for (int i = 0; i < static_cast<int>(n); i++) { 
         for (int j = 0; j < static_cast<int>(n); j++) {
@@ -127,7 +173,7 @@ SqMatrixBf<T> SqMatrixBf<T>::mul(const SqMatrixBf<T> &mat) {
 }
 
 template <typename T>
-SqMatrixBf<T> SqMatrixBf<T>::transpose(void) {
+SqMatrixBf<T> SqMatrixBf<T>::transpose(void) const {
     SqMatrixBf<T> res_mat(n, {});
     for (int i = 0; i < static_cast<int>(n); i++) { 
         for (int j = 0; j < static_cast<int>(n); j++) {
@@ -138,7 +184,7 @@ SqMatrixBf<T> SqMatrixBf<T>::transpose(void) {
 }
 
 template <typename T>
-SqMatrixBf<T> SqMatrixBf<T>::neg(void) {
+SqMatrixBf<T> SqMatrixBf<T>::neg(void) const {
     SqMatrixBf<T> res_mat(n, {});
     res_mat = (*this) * (-1);
     return res_mat;
@@ -179,7 +225,7 @@ T SqMatrixBf<T>::det_gauss(void) {
 }
 #endif
 
-template <typename T> /* TODO:*/
+template <typename T>
 T SqMatrixBf<T>::det_recursion(void) {
     int sz = static_cast<int>(n);
 
@@ -188,17 +234,12 @@ T SqMatrixBf<T>::det_recursion(void) {
 
     SqMatrixBf<T> mat{n - 1, {}};
     T res{}, value{};
-    int is_skip = 0;
 
     for (int l = 0; l < sz; l++) {
-        for (int i = 0; i < sz - 1; i++) {
-            for (int j = 0; j < sz - 1; j++) {
-                is_skip = j >= l;
-                mat[i][j] = (*this)[i + 1][j + is_skip];
-            }
-        }
+        mat = minor(0, l);
         value = (*this)[0][l] * mat.det_recursion();
-        res += (l + is_skip) % 2 ? value : -value;
+        res += l % 2 ? -value : value;
     }
+
     return res;
 }

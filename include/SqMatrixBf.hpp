@@ -54,6 +54,8 @@ class SqMatrixBf final {
         return n;
     }
 
+    /* TODO: check SqMatrixBf &method() &; */
+
     SqMatrixBf operator+(const SqMatrixBf &mat) const;
     SqMatrixBf operator-(const SqMatrixBf &mat) const;
     SqMatrixBf operator*(const T &value) const;
@@ -66,12 +68,13 @@ class SqMatrixBf final {
 
     void swap_rows(int i, int j);
     void swap_cols(int i, int j);
-    int  max_row_elem_index(int i);
-    int  max_col_elem_index(int i);
+    int  max_row_elem_index(int row) const;
+    int  max_col_elem_index(int col) const;
 
-    SqMatrixBf mul(const SqMatrixBf &mat);
-    SqMatrixBf transpose(void);
-    SqMatrixBf neg(void);
+    SqMatrixBf minor(int row, int col) const;
+    SqMatrixBf mul(const SqMatrixBf &mat) const;
+    SqMatrixBf transpose(void) const;
+    SqMatrixBf neg(void) const;
     T tr(void);
     T det_gauss(void);
     T det_recursion(void);
