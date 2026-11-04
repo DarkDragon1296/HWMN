@@ -66,6 +66,8 @@ class SqMatrixBf final {
 
     void swap_rows(int i, int j);
     void swap_cols(int i, int j);
+    int  max_row_elem_index(int i);
+    int  max_col_elem_index(int i);
 
     SqMatrixBf mul(const SqMatrixBf &mat);
     SqMatrixBf transpose(void);

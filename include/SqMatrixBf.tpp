@@ -181,25 +181,24 @@ T SqMatrixBf<T>::det_gauss(void) {
 
 template <typename T> /* TODO:*/
 T SqMatrixBf<T>::det_recursion(void) {
-    if (static_cast<int>(n) == 1)
+    int sz = static_cast<int>(n);
+
+    if (sz == 1)
         return (*this)[0][0];
 
     SqMatrixBf<T> mat{n - 1, {}};
-    T res{};
-    bool skip = false;
+    T res{}, value{};
+    int is_skip = 0;
 
-    for (int l = 0; l < static_cast<int>(n); l++) {
-        for (int i = 0; i < static_cast<int>(n - 1); i++) {
-            for (int j = 0; j < static_cast<int>(n - 1); j++) {
-                skip = j >= l;
-                mat[i][j] = (*this)[i + 1][j + static_cast<int>(skip)];
+    for (int l = 0; l < sz; l++) {
+        for (int i = 0; i < sz - 1; i++) {
+            for (int j = 0; j < sz - 1; j++) {
+                is_skip = j >= l;
+                mat[i][j] = (*this)[i + 1][j + is_skip];
             }
         }
-        if (l + static_cast<int>(skip) % 2) {
-            res += (*this)[0][l] * mat.det_recursion();
-        } else {
-            res -= (*this)[0][l] * mat.det_recursion();
-        }
+        value = (*this)[0][l] * mat.det_recursion();
+        res += (l + is_skip) % 2 ? value : -value;
     }
     return res;
 }
