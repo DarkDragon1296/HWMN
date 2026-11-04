@@ -26,12 +26,6 @@ void printf_matrix_jg(SqMatrixJg<T> &mat) {
 }
 
 int main(void) {
-    size_t n = 2;
-
-    SqMatrixBf<int> mat1{n, {1, 0, 0, 1}};
-
-    int det = mat1.det_recursion();
-    std::cout << det << std::endl;
 
     return 0;
 }

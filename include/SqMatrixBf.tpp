@@ -40,7 +40,6 @@ SqMatrixBf<T> SqMatrixBf<T>::operator*(const T &value) const {
     return res_mat;
 }
 
-
 template <typename T>
 SqMatrixBf<T> operator*(const T &value, const SqMatrixBf<T> &mat) {
     return mat * value;
