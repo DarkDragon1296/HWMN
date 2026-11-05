@@ -5,9 +5,9 @@
 
 template <typename T>
 void printf_matrix_bf(SqMatrixBf<T> &mat) {
-    int n = static_cast<int>(mat.size());
-    for (int i = 0; i < n; i++) { 
-        for (int j = 0; j < n; j++) {
+    size_t n = mat.size();
+    for (size_t i = 0; i < n; i++) { 
+        for (size_t j = 0; j < n; j++) {
             std::cout << mat[i][j] << " ";
         }
         std::cout << std::endl;
@@ -16,9 +16,9 @@ void printf_matrix_bf(SqMatrixBf<T> &mat) {
 
 template <typename T>
 void printf_matrix_jg(SqMatrixJg<T> &mat) {
-    int n = static_cast<int>(mat.size());
-    for (int i = 0; i < n; i++) { 
-        for (int j = 0; j < n; j++) {
+    size_t n = mat.size();
+    for (size_t i = 0; i < n; i++) { 
+        for (size_t j = 0; j < n; j++) {
             std::cout << mat[i][j] << " ";
         }
         std::cout << std::endl;
@@ -26,5 +26,9 @@ void printf_matrix_jg(SqMatrixJg<T> &mat) {
 }
 
 int main(void) {
+    SqMatrixBf<int> mat{2, {1, 2, 3, 4}};
+    mat.sum_rows(0, 1);
+    int x = mat.tr();
+    printf_matrix_bf(mat);
     return 0;
 }

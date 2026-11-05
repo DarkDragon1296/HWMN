@@ -17,12 +17,12 @@ class SqMatrixBf final {
         public:
         ProxyRow(typename std::vector<T>::iterator row_) : row_data{row_} {}
 
-        T &operator[](int col) {
-            return *(row_data + col);
+        T &operator[](size_t col) {
+            return *(row_data + static_cast<int>(col));
         }
 
-        const T &operator[](int col) const {
-            return *(row_data + col);
+        const T &operator[](size_t col) const {
+            return *(row_data + static_cast<int>(col));
         }
     };
 
@@ -32,22 +32,22 @@ class SqMatrixBf final {
         ConstProxyRow(typename std::vector<T>::const_iterator row_) :
                       row_data{row_} {}
 
-        T &operator[](int col) {
-            return *(row_data + col);
+        T &operator[](size_t col) {
+            return *(row_data + static_cast<int>(col));
         }
 
-        const T &operator[](int col) const {
-            return *(row_data + col);
+        const T &operator[](size_t col) const {
+            return *(row_data + static_cast<int>(col));
         }
     };
 
-    ProxyRow operator[](int row) {
-        return ProxyRow(std::next(data.begin(), static_cast<int>(n) * row));
+    ProxyRow operator[](size_t row) {
+        return ProxyRow(std::next(data.begin(), static_cast<int>(n * row)));
     }
 
-    const ConstProxyRow operator[](int row) const {
+    const ConstProxyRow operator[](size_t row) const {
         return ConstProxyRow(std::next(data.cbegin(),
-                             static_cast<int>(n) * row));
+                                       static_cast<int>(n * row)));
     }
 
     size_t size() const {
@@ -66,26 +66,26 @@ class SqMatrixBf final {
     void operator*=(const T &value);
     void operator/=(const T &value);
 
-    void swap_rows(int i, int j);
-    void swap_cols(int i, int j);
-    void sum_rows(int i, int j);
-    void sum_cols(int i, int j);
-    void sub_rows(int i, int j);
-    void sub_cols(int i, int j);
-    void mul_row(int row, T value);
-    void mul_col(int col, T value);
-    void div_row(int row, T value);
-    void div_col(int col, T value);
-    int  max_row_elem_index(int row) const;
-    int  max_col_elem_index(int col) const;
+    void swap_rows(size_t i, size_t j);
+    void swap_cols(size_t i, size_t j);
+    void sum_rows(size_t i, size_t j);
+    void sum_cols(size_t i, size_t j);
+    void sub_rows(size_t i, size_t j);
+    void sub_cols(size_t i, size_t j);
+    void mul_row(size_t row, T value);
+    void mul_col(size_t col, T value);
+    void div_row(size_t row, T value);
+    void div_col(size_t col, T value);
+    size_t max_row_elem_index(size_t row) const;
+    size_t max_col_elem_index(size_t col) const;
 
-    SqMatrixBf minor(int row, int col) const;
+    SqMatrixBf minor(size_t row, size_t col) const;
     SqMatrixBf mul(const SqMatrixBf &mat) const;
     SqMatrixBf transpose(void) const;
     SqMatrixBf neg(void) const;
     T tr(void);
     T det_gauss(void);
-    T det_recursion(void);
+    T det_recursion(void) const;
 };
 
 template <typename T>

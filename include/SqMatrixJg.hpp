@@ -66,3 +66,6 @@ SqMatrixJg<T>::SqMatrixJg(size_t n_, std::vector<T> &&data_) : n{n_} {
         }
     }
 };
+
+#include "SqMatrixOp.tpp"
+#include "SqMatrixJg.tpp"
