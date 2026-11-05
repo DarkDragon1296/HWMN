@@ -68,6 +68,14 @@ class SqMatrixBf final {
 
     void swap_rows(int i, int j);
     void swap_cols(int i, int j);
+    void sum_rows(int i, int j);
+    void sum_cols(int i, int j);
+    void sub_rows(int i, int j);
+    void sub_cols(int i, int j);
+    void mul_row(int row, T value);
+    void mul_col(int col, T value);
+    void div_row(int row, T value);
+    void div_col(int col, T value);
     int  max_row_elem_index(int row) const;
     int  max_col_elem_index(int col) const;
 

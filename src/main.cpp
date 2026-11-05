@@ -26,6 +26,5 @@ void printf_matrix_jg(SqMatrixJg<T> &mat) {
 }
 
 int main(void) {
-
     return 0;
 }

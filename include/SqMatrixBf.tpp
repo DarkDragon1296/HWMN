@@ -113,6 +113,62 @@ void SqMatrixBf<T>::swap_cols(int i, int j) {
 }
 
 template <typename T>
+void SqMatrixBf<T>::sum_rows(int i, int j) {
+    for (int col = 0; col < static_cast<int>(n); col++) {
+        (*this)[i][col] += (*this)[j][col];
+    }
+}
+
+template <typename T>
+void SqMatrixBf<T>::sum_cols(int i, int j) {
+    for (int row = 0; row < static_cast<int>(n); row++) {
+        (*this)[row][i] += (*this)[row][j];
+    }
+}
+
+template <typename T>
+void SqMatrixBf<T>::sub_rows(int i, int j) {
+    for (int col = 0; col < static_cast<int>(n); col++) {
+        (*this)[i][col] -= (*this)[j][col];
+    }
+}
+
+template <typename T>
+void SqMatrixBf<T>::sub_cols(int i, int j) {
+    for (int row = 0; row < static_cast<int>(n); row++) {
+        (*this)[row][i] -= (*this)[row][j];
+    }
+}
+
+template <typename T>
+void SqMatrixBf<T>::mul_row(int row, T value) {
+    for (int col = 0; col < static_cast<int>(n); col++) {
+        (*this)[row][col] *= value;
+    }
+}
+
+template <typename T>
+void SqMatrixBf<T>::mul_col(int col, T value) {
+    for (int row = 0; row < static_cast<int>(n); row++) {
+        (*this)[row][col] *= value;
+    }
+}
+
+template <typename T>
+void SqMatrixBf<T>::div_row(int row, T value) {
+    for (int col = 0; col < static_cast<int>(n); col++) {
+        (*this)[row][col] /= value;
+    }
+}
+
+template <typename T>
+void SqMatrixBf<T>::div_col(int col, T value) {
+    for (int row = 0; row < static_cast<int>(n); row++) {
+        (*this)[row][col] /= value;
+    }
+}
+
+template <typename T>
 int SqMatrixBf<T>::max_row_elem_index(int row) const {
     int index = 0;
     for (int col = 1; col < static_cast<int>(n); col++) {
@@ -197,32 +253,17 @@ T SqMatrixBf<T>::tr(void) {
     return tr;
 }
 
-#if 0
 template <typename T> /* TODO:*/
 T SqMatrixBf<T>::det_gauss(void) {
     SqMatrixBf<T> mat = (*this);
-    bool is_minus = false;
-    T res{};
+    bool minus = false;
 
     for (int i = 0; i < static_cast<int>(n); i++) {
-        bool is_zero_col = false;
 
-        for (int j = 0; j < static_cast<int>(n); j++) {
-            if (!mat[i][j]) {
-                if (i == j);
-                    break;
-
-                swap_rows(i, j);
-                    is_zero_col = !is_zero_col;
-            }
-        }
 
 
     }
-
-    return tr(); // wrong
 }
-#endif
 
 template <typename T>
 T SqMatrixBf<T>::det_recursion(void) {
