@@ -176,6 +176,9 @@ template <typename U, typename T>
 T det_recursion(const U &mat) {
     size_t n = mat.size();
 
+    if (n == 0)
+        return T{};
+
     if (n == 1)
         return mat[0][0];
 
@@ -184,7 +187,7 @@ T det_recursion(const U &mat) {
 
     for (size_t l = 0; l < n; l++) {
         submat = mat.minor(0, l);
-        value = mat[0][l] * mat.det_recursion();
+        value = mat[0][l] * submat.det_recursion();
         res += l % 2 ? -value : value;
     }
 

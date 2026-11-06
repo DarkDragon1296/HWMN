@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 #include <vector>
 
 template <typename T>
@@ -17,55 +16,72 @@ class SqMatrixJg final {
         public:
         ProxyRow(std::vector<T> row_data_) : row_data{std::move(row_data_)} {}
 
-        T &operator[](int col) {
-            return row_data[static_cast<size_t>(col)];
+        T &operator[](size_t col) {
+            return row_data[col];
         }
 
-        const T &operator[](int col) const {
-            return row_data[static_cast<size_t>(col)];
+        const T &operator[](size_t col) const {
+            return row_data[col];
         }
     };
 
     class ConstProxyRow {
         std::vector<T> row_data;
         public:
-        ConstProxyRow(std::vector<T> row_data_) : row_data{std::move(row_data_)} {}
+        ConstProxyRow(std::vector<T> row_data_)
+            : row_data{std::move(row_data_)} {}
 
-        T &operator[](int col) {
-            return row_data[static_cast<size_t>(col)];
+        T &operator[](size_t col) {
+            return row_data[col];
         }
 
-        const T &operator[](int col) const {
-            return row_data[static_cast<size_t>(col)];
+        const T &operator[](size_t col) const {
+            return row_data[col];
         }
     };
 
-    ProxyRow operator[](int row) {
-        return ProxyRow(data[static_cast<size_t>(row)]);
+    ProxyRow operator[](size_t row) {
+        return data[row];
     }
 
-    const ConstProxyRow operator[](int row) const {
-        return ConstProxyRow(data[static_cast<size_t>(row)]);
+    const ConstProxyRow operator[](size_t row) const {
+        return data[row];
     }
 
-    size_t size() const {
+    size_t size() const { /* TODO: move realization */
         return n;
     }
+
+    SqMatrixJg operator+(const SqMatrixJg &mat) const;
+    SqMatrixJg operator-(const SqMatrixJg &mat) const;
+    SqMatrixJg operator*(const T &value) const;
+    SqMatrixJg operator/(const T &value) const;
+
+    void operator+=(const SqMatrixJg &mat);
+    void operator-=(const SqMatrixJg &mat);
+    void operator*=(const T &value);
+    void operator/=(const T &value);
+
+    void swap_rows(size_t i, size_t j);
+    void swap_cols(size_t i, size_t j);
+    void sum_rows(size_t i, size_t j);
+    void sum_cols(size_t i, size_t j);
+    void sub_rows(size_t i, size_t j);
+    void sub_cols(size_t i, size_t j);
+    void mul_row(size_t row, T value);
+    void mul_col(size_t col, T value);
+    void div_row(size_t row, T value);
+    void div_col(size_t col, T value);
+    size_t max_row_elem_index(size_t row) const;
+    size_t max_col_elem_index(size_t col) const;
+
+    SqMatrixJg minor(size_t row, size_t col) const;
+    SqMatrixJg mul(const SqMatrixJg &mat) const;
+    SqMatrixJg transpose(void) const;
+    SqMatrixJg neg(void) const;
+    T tr(void) const;
+    T det_gauss(void) const;
+    T det_recursion(void) const;
 };
 
-template <typename T>
-SqMatrixJg<T>::SqMatrixJg(size_t n_, std::vector<T> &&data_) : n{n_} {
-    data.resize(n, std::vector<T>(n, 0));
-    size_t sz = data_.size();
-
-    for (size_t i = 0; i < n; i++) {
-        for (size_t j = 0; j < n; j++) {
-            if (i * n + j >= sz)
-                return;
-            data[i][j] = data_[i * n + j];
-        }
-    }
-};
-
-#include "SqMatrixOp.tpp"
 #include "SqMatrixJg.tpp"

@@ -26,9 +26,12 @@ void printf_matrix_jg(SqMatrixJg<T> &mat) {
 }
 
 int main(void) {
-    SqMatrixBf<int> mat{2, {1, 2, 3, 4}};
-    mat.sum_rows(0, 1);
-    int x = mat.tr();
-    printf_matrix_bf(mat);
+    SqMatrixJg<int> mat{2, {}};
+    SqMatrixJg<int> submat{1, {}};
+
+//    submat = mat.minor(0, 0);
+    std::cout << mat[0][0] << mat[0][1] << mat[1][0] << mat[1][1] << std::endl;
+    printf_matrix_jg(mat);
+//    printf_matrix_jg(submat);
     return 0;
 }

@@ -185,7 +185,7 @@ SqMatrixBf<T> SqMatrixBf<T>::neg(void) const {
 }
 
 template <typename T>
-T SqMatrixBf<T>::tr(void) {
+T SqMatrixBf<T>::tr(void) const {
     return operations::tr<SqMatrixBf<T>, T>(*this);
 }
 

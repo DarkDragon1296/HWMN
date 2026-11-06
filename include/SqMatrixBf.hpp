@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 #include <vector> // TODO: write our version
 
 template <typename T>
@@ -50,7 +49,7 @@ class SqMatrixBf final {
                                        static_cast<int>(n * row)));
     }
 
-    size_t size() const {
+    size_t size() const { /* TODO: move realization */
         return n;
     }
 
@@ -83,8 +82,8 @@ class SqMatrixBf final {
     SqMatrixBf mul(const SqMatrixBf &mat) const;
     SqMatrixBf transpose(void) const;
     SqMatrixBf neg(void) const;
-    T tr(void);
-    T det_gauss(void);
+    T tr(void) const;
+    T det_gauss(void) const;
     T det_recursion(void) const;
 };
 
