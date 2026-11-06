@@ -11,40 +11,11 @@ class SqMatrixJg final {
 
     SqMatrixJg(size_t n_, std::vector<T> &&data_ = T{});
 
-    class ProxyRow {
-        std::vector<T> row_data;
-        public:
-        ProxyRow(std::vector<T> row_data_) : row_data{std::move(row_data_)} {}
-
-        T &operator[](size_t col) {
-            return row_data[col];
-        }
-
-        const T &operator[](size_t col) const {
-            return row_data[col];
-        }
-    };
-
-    class ConstProxyRow {
-        std::vector<T> row_data;
-        public:
-        ConstProxyRow(std::vector<T> row_data_)
-            : row_data{std::move(row_data_)} {}
-
-        T &operator[](size_t col) {
-            return row_data[col];
-        }
-
-        const T &operator[](size_t col) const {
-            return row_data[col];
-        }
-    };
-
-    ProxyRow operator[](size_t row) {
+    std::vector<T> &operator[](size_t row) {
         return data[row];
     }
 
-    const ConstProxyRow operator[](size_t row) const {
+    const std::vector<T> &operator[](size_t row) const {
         return data[row];
     }
 
