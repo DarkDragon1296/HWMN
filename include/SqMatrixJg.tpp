@@ -117,23 +117,23 @@ void SqMatrixJg<T>::swap_cols(size_t i, size_t j) {
 }
 
 template <typename T>
-void SqMatrixJg<T>::sum_rows(size_t i, size_t j) {
-    operations::sum_rows(*this, i, j);
+void SqMatrixJg<T>::add_row(size_t i, size_t j, T coeff) {
+    operations::add_row(*this, i, j, coeff);
 }
 
 template <typename T>
-void SqMatrixJg<T>::sum_cols(size_t i, size_t j) {
-    operations::sum_cols(*this, i, j);
+void SqMatrixJg<T>::add_col(size_t i, size_t j, T coeff) {
+    operations::add_col(*this, i, j, coeff);
 }
 
 template <typename T>
-void SqMatrixJg<T>::sub_rows(size_t i, size_t j) {
-    operations::sub_rows(*this, i, j);
+void SqMatrixJg<T>::sub_row(size_t i, size_t j, T coeff) {
+    operations::sub_row(*this, i, j, coeff);
 }
 
 template <typename T>
-void SqMatrixJg<T>::sub_cols(size_t i, size_t j) {
-    operations::sub_cols(*this, i, j);
+void SqMatrixJg<T>::sub_col(size_t i, size_t j, T coeff) {
+    operations::sub_col(*this, i, j, coeff);
 }
 
 template <typename T>
@@ -194,4 +194,9 @@ T SqMatrixJg<T>::tr(void) const {
 template <typename T>
 T SqMatrixJg<T>::det_recursion(void) const {
     return operations::det_recursion<SqMatrixJg<T>, T>(*this);
+}
+
+template <typename T>
+T SqMatrixJg<T>::det_gauss(void) const {
+    return operations::det_gauss<SqMatrixJg<T>, T>(*this);
 }

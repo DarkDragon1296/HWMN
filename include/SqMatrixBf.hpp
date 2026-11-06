@@ -67,14 +67,17 @@ class SqMatrixBf final {
 
     void swap_rows(size_t i, size_t j);
     void swap_cols(size_t i, size_t j);
-    void sum_rows(size_t i, size_t j);
-    void sum_cols(size_t i, size_t j);
-    void sub_rows(size_t i, size_t j);
-    void sub_cols(size_t i, size_t j);
+
+    void add_row(size_t i, size_t j, T coeff);
+    void add_col(size_t i, size_t j, T coeff);
+    void sub_row(size_t i, size_t j, T coeff);
+    void sub_col(size_t i, size_t j, T coeff);
+
     void mul_row(size_t row, T value);
     void mul_col(size_t col, T value);
     void div_row(size_t row, T value);
     void div_col(size_t col, T value);
+
     size_t max_row_elem_index(size_t row) const;
     size_t max_col_elem_index(size_t col) const;
 

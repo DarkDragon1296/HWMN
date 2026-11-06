@@ -115,23 +115,23 @@ void SqMatrixBf<T>::swap_cols(size_t i, size_t j) {
 }
 
 template <typename T>
-void SqMatrixBf<T>::sum_rows(size_t i, size_t j) {
-    operations::sum_rows(*this, i, j);
+void SqMatrixBf<T>::add_row(size_t i, size_t j, T coeff) {
+    operations::add_row<SqMatrixBf<T>, T>(*this, i, j, coeff);
 }
 
 template <typename T>
-void SqMatrixBf<T>::sum_cols(size_t i, size_t j) {
-    operations::sum_cols(*this, i, j);
+void SqMatrixBf<T>::add_col(size_t i, size_t j, T coeff) {
+    operations::add_col<SqMatrixBf<T>, T>(*this, i, j, coeff);
 }
 
 template <typename T>
-void SqMatrixBf<T>::sub_rows(size_t i, size_t j) {
-    operations::sub_rows(*this, i, j);
+void SqMatrixBf<T>::sub_row(size_t i, size_t j, T coeff) {
+    operations::sub_row<SqMatrixBf<T>, T>(*this, i, j, coeff);
 }
 
 template <typename T>
-void SqMatrixBf<T>::sub_cols(size_t i, size_t j) {
-    operations::sub_cols(*this, i, j);
+void SqMatrixBf<T>::sub_col(size_t i, size_t j, T coeff) {
+    operations::sub_col<SqMatrixBf<T>, T>(*this, i, j, coeff);
 }
 
 template <typename T>
@@ -192,4 +192,9 @@ T SqMatrixBf<T>::tr(void) const {
 template <typename T>
 T SqMatrixBf<T>::det_recursion(void) const {
     return operations::det_recursion<SqMatrixBf<T>, T>(*this);
+}
+
+template <typename T>
+T SqMatrixBf<T>::det_gauss(void) const {
+    return operations::det_gauss<SqMatrixBf<T>, T>(*this);
 }

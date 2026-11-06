@@ -1,36 +1,52 @@
 #pragma once
 
+#include <iostream>
+#include <cmath>
+#include <limits>
+#include <type_traits>
+
 namespace operations {
 
-template <typename U>
-void sum_rows(U &mat, size_t i, size_t j) {
+template <typename T>
+bool is_zero(T value) {
+    if (std::is_integral_v<T>)
+        return value == 0;
+
+    if (std::is_floating_point_v<T>)
+        return std::abs(value) <= std::numeric_limits<T>::epsilon();
+
+    return false;
+}
+
+template <typename U, typename T>
+void add_row(U &mat, size_t i, size_t j, T coeff) {
     size_t n = mat.size();
     for (size_t col = 0; col < n; col++) {
-        mat[i][col] += mat[j][col];
+        mat[i][col] += coeff * mat[j][col];
     }
 }
 
-template <typename U>
-void sum_cols(U &mat, size_t i, size_t j) {
+template <typename U, typename T>
+void add_col(U &mat, size_t i, size_t j, T coeff) {
     size_t n = mat.size();
     for (size_t row = 0; row < n; row++) {
-        mat[row][i] += mat[row][j];
+        mat[row][i] += coeff * mat[row][j];
     }
 }
 
-template <typename U>
-void sub_rows(U &mat, size_t i, size_t j) {
+template <typename U, typename T>
+void sub_row(U &mat, size_t i, size_t j, T coeff) {
     size_t n = mat.size();
     for (size_t col = 0; col < n; col++) {
-        mat[i][col] -= mat[j][col];
+        mat[i][col] -= coeff * mat[j][col];
     }
 }
 
-template <typename U>
-void sub_cols(U &mat, size_t i, size_t j) {
+template <typename U, typename T>
+void sub_col(U &mat, size_t i, size_t j, T coeff) {
     size_t n = mat.size();
     for (size_t row = 0; row < n; row++) {
-        mat[row][i] -= mat[row][j];
+        mat[row][i] -= coeff * mat[row][j];
     }
 }
 
@@ -71,12 +87,7 @@ size_t max_row_elem_index(const U &mat, size_t row) {
     size_t n = mat.size();
     size_t index = 0;
     for (size_t col = 1; col < n; col++) {
-        T i_value = mat[row][index];
-        T e_value = mat[row][col];
-        i_value *= i_value >= 0 ? 1 : -1;
-        e_value *= e_value >= 0 ? 1 : -1;
-
-        if (i_value > e_value)
+        if (std::abs(mat[row][col]) > std::abs(mat[row][index]))
             index = col;
     }
     return index;
@@ -87,12 +98,7 @@ size_t max_col_elem_index(const U &mat, size_t col) {
     size_t n = mat.size();
     size_t index = 0;
     for (size_t row = 1; row < n; row++) {
-        T i_value = mat[index][col];
-        T e_value = mat[row  ][col];
-        i_value *= i_value >= 0 ? 1 : -1;
-        e_value *= e_value >= 0 ? 1 : -1;
-
-        if (i_value > e_value)
+        if (std::abs(mat[row][col]) > std::abs(mat[index][col]))
             index = row;
     }
     return index;
@@ -158,20 +164,6 @@ T tr(const U &mat) {
     return tr;
 }
 
-#if 0
-template <typename T> /* TODO:*/
-T SqMatrixBf<T>::det_gauss(void) {
-    SqMatrixBf<T> mat = (*this);
-    bool minus = false;
-
-    for (int i = 0; i < static_cast<int>(n); i++) {
-
-
-
-    }
-}
-#endif
-
 template <typename U, typename T>
 T det_recursion(const U &mat) {
     size_t n = mat.size();
@@ -190,6 +182,55 @@ T det_recursion(const U &mat) {
         value = mat[0][l] * submat.det_recursion();
         res += l % 2 ? -value : value;
     }
+
+    return res;
+}
+
+template <typename U, typename T>
+T det_gauss(const U &src) {
+    U mat = src;
+    size_t n = mat.size();
+    bool minus = false;
+
+    if (n == 0)
+        return T{};
+
+    for (size_t i = 0; i < n; i++) {
+        size_t max_index = mat.max_col_elem_index(i);
+        std::cout << "(" << max_index << ") "; /* TODO: del */
+        if (is_zero(mat[max_index][i]))
+            return T{};
+
+        if (max_index != i) {
+            mat.swap_rows(i, max_index);
+            minus = !minus;
+        }
+
+        for (size_t i1 = 0; i1 < n; i1++) {
+            for (size_t j1 = 0; j1 < n; j1++) {
+                std::cout << mat[i1][j1] << " ";
+            }
+            std::cout << std::endl;
+        }
+
+        for (size_t j = i + 1; j < n; j++)
+            mat.sub_row(j, i, mat[j][i] / mat[i][i]);
+
+        for (size_t i1 = 0; i1 < n; i1++) {
+            for (size_t j1 = 0; j1 < n; j1++) {
+                std::cout << mat[i1][j1] << " ";
+            }
+            std::cout << std::endl;
+        }
+        std::cout << std::endl;
+    }
+
+    T res = mat[0][0];
+
+    for (size_t i = 1; i < n; i++)
+        res *= mat[i][i];
+
+    res = minus ? -res : res;
 
     return res;
 }

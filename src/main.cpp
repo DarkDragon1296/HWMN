@@ -26,19 +26,10 @@ void printf_matrix_jg(SqMatrixJg<T> &mat) {
 }
 
 int main(void) {
-    SqMatrixJg<int> mat{3, {1, 2, 3, 4, 5, 6, 7, 8, 9}};
-    SqMatrixJg<int> submat{2, {}};
+    SqMatrixBf<int> mat{3, {1, 2, 3, 4, 5, 6, 7, 8, 9}};
 
-    submat = mat.minor(0, 0);
-    submat[0][0] = 1;
-    printf_matrix_jg(mat);
-    printf_matrix_jg(submat);
+    int x = mat.det_gauss();
+    std::cout << x;
 
-    SqMatrixBf<int> mat1{3, {1, 2, 3, 4, 5, 6, 7, 8, 9}};
-    SqMatrixBf<int> submat1{2, {}};
-
-    submat1 = mat1.minor(0, 0);
-    printf_matrix_bf(mat1);
-    printf_matrix_bf(submat1);
     return 0;
 }
