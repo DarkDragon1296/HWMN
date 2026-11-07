@@ -4,8 +4,15 @@
 #include "detail/SqMatrixOp.tpp"
 
 template <typename T>
-SqMatrixBf<T>::SqMatrixBf(size_t n_, buffers::VLA<T> &&data_) 
-    : n{n_}, data{std::move(data_)} {};
+SqMatrixBf<T>::SqMatrixBf(size_t n_) 
+    : n{n_}, 
+      data{buffers::VLA<T>::create(n_ * n_)} {}
+
+
+template <typename T>
+SqMatrixBf<T>::SqMatrixBf(size_t n_, std::initializer_list<T> values)
+    : n{n_}, 
+      data(n_ * n_, values) {} // Fun fact! () matter here specifically
 
 template <typename T>
 size_t SqMatrixBf<T>::size() const { 

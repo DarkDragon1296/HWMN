@@ -5,6 +5,16 @@
 namespace buffers {
 
 template <typename T>
+VLA<T>::VLA(size_t n_, std::initializer_list<T> values) 
+    : data{n_ ? new T[n_] : nullptr}, 
+      n{n_} 
+{
+    std::copy(values.begin(),
+              values.size() <= n ? values.end() : values.begin() + n,
+              data);
+}
+
+template <typename T>
 VLA<T>::VLA(std::initializer_list<T> values) 
     : data{values.size() ? new T[values.size()] : nullptr}, 
       n{values.size()} 

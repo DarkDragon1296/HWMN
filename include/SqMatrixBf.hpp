@@ -4,54 +4,38 @@
 
 template <typename T>
 class SqMatrixBf final {
+    private:
     size_t n;
     buffers::VLA<T> data;
 
     public:
+    explicit SqMatrixBf(size_t n_);
+    SqMatrixBf(size_t n_, std::initializer_list<T> values);
 
-    SqMatrixBf(size_t n_, buffers::VLA<T> &&data_ = T{});
-
+    template <typename It>
     class ProxyRow {
-        typename buffers::VLA<T>::iterator row_data;
+        It row_data;
         public:
-        ProxyRow(typename buffers::VLA<T>::iterator row_) : row_data{row_} {}
+        ProxyRow(It row_) : row_data{row_} {}
 
-        T &operator[](size_t col) {
-            return *(row_data + col);
-        }
-
-        const T &operator[](size_t col) const {
-            return *(row_data + col);
+        decltype(auto) operator[](size_t col) const {
+            using iter_diff = typename std::iterator_traits<It>::difference_type;
+            return row_data[static_cast<iter_diff>(col)];
         }
     };
 
-    class ConstProxyRow {
-        typename buffers::VLA<T>::const_iterator row_data;
-        public:
-        ConstProxyRow(typename buffers::VLA<T>::const_iterator row_) 
-            : row_data{row_} {}
-
-        T &operator[](size_t col) {
-            return *(row_data + col);
-        }
-
-        const T &operator[](size_t col) const {
-            return *(row_data + col);
-        }
-    };
-
-    ProxyRow operator[](size_t row) {
-        using iter  = typename buffers::VLA<T>::iterator;
+    ProxyRow<typename buffers::VLA<T>::iterator> operator[](size_t row) {
+        using iter      = typename buffers::VLA<T>::iterator;
         using iter_diff = typename std::iterator_traits<iter>::difference_type;
         return ProxyRow(std::next(data.begin(), 
                                   static_cast<iter_diff>(n * row)));
     }
 
-    const ConstProxyRow operator[](size_t row) const {
-        using iter  = typename buffers::VLA<T>::const_iterator;
+    ProxyRow<typename buffers::VLA<T>::const_iterator> operator[](size_t row) const {
+        using iter      = typename buffers::VLA<T>::const_iterator;
         using iter_diff = typename std::iterator_traits<iter>::difference_type;
-        return ConstProxyRow(std::next(data.cbegin(), 
-                                       static_cast<iter_diff>(n * row)));
+        return ProxyRow(std::next(data.cbegin(), 
+                        static_cast<iter_diff>(n * row)));
     }
 
     size_t size() const; 
