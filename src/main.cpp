@@ -30,7 +30,7 @@ int main(void) {
                               4.0f, 5.0f, 6.0f,
                               7.0f, 8.0f, 9.0f}};
 
-    float x = mat.det_gauss();
+    float x = mat.det_bareiss();
     std::cout << x;
 
     return 0;

@@ -221,7 +221,37 @@ T det_gauss(const U &src) {
 
 template <typename U, typename T>
 T det_bareiss(const U &src) {
-    return T{};
+    U mat = src;
+    size_t n = mat.size();
+    bool minus = false;
+
+    if (n == 0)
+        return T{};
+
+    for (size_t k = 0; k < n - 1; k++) {
+        if (k != 0 && is_zero(mat[k][k])) {
+            size_t max_index = mat.max_col_elem_index(k, k);
+            if (max_index == k)
+                return T{};
+
+            mat.swap_rows(k, max_index);
+            minus = !minus;
+        }
+
+        for (size_t i = k + 1; i < n; i++) {
+            for (size_t j = k + 1; j < n; j++) {
+                if(k == 0) {
+                    mat[i][j] = (mat[i][j] * mat[0][0] - mat[i][0] * mat[0][j]);
+                } else {
+                    mat[i][j] = (mat[i][j] * mat[k][k] - mat[i][k] * mat[k][j])
+                              / mat[k - 1][k - 1];
+                }
+            }
+        }
+    }
+
+    T res = minus ? -mat[n - 1][n - 1] : mat[n - 1][n - 1];
+    return res;
 }
 
 }
