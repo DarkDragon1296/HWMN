@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <cmath>
 #include <limits>
 #include <type_traits>
@@ -257,11 +258,37 @@ T det_bareiss(const U &src) {
 template <typename U, typename T>
 T det_lu(const U &src) {
     size_t n = src.size();
-#if 0
-    U l_mat, u_mat;
-#endif
+    U l_mat{n, {}}, u_mat{n, {}};
 
-    return T{};
+    if (n == 0)
+        return T{};
+
+    for (size_t i = 0; i < n; i++)
+        l_mat[i][i] = static_cast<T>(1);
+
+    for (size_t i = 0; i < n; i++) {
+        for (size_t j = 0; j < n; j++) {
+            if (i <= j) {
+                u_mat[i][j] = src[i][j];
+                for (size_t k = 1; k <= i; k++)
+                    u_mat[i][j] -= l_mat[i][k - 1] * u_mat[k - 1][j];
+            } else {
+                l_mat[i][j] = src[i][j];
+                for (size_t k = 1; k <= j; k++)
+                    l_mat[i][j] -= l_mat[i][k - 1] * u_mat[k - 1][j];
+                l_mat[i][j] /= u_mat[j][j];
+            }
+            if (i == j && is_zero(u_mat[i][i]))
+                return T{};
+        }
+    }
+
+    T res = u_mat[0][0];
+
+    for (size_t i = 1; i < n; i++)
+        res *= u_mat[i][i];
+
+    return res;
 }
 
 }
