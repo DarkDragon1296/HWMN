@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 #include <cmath>
 #include <limits>
 #include <type_traits>
@@ -83,10 +82,10 @@ void div_col(U &mat, size_t col, T value) {
 }
 
 template <typename U, typename T>
-size_t max_row_elem_index(const U &mat, size_t row) {
+size_t max_row_elem_index(const U &mat, size_t row, size_t start) {
     size_t n = mat.size();
-    size_t index = 0;
-    for (size_t col = 1; col < n; col++) {
+    size_t index = start;
+    for (size_t col = start + 1; col < n; col++) {
         if (std::abs(mat[row][col]) > std::abs(mat[row][index]))
             index = col;
     }
@@ -94,10 +93,10 @@ size_t max_row_elem_index(const U &mat, size_t row) {
 }
 
 template <typename U, typename T>
-size_t max_col_elem_index(const U &mat, size_t col) {
+size_t max_col_elem_index(const U &mat, size_t col, size_t start) {
     size_t n = mat.size();
-    size_t index = 0;
-    for (size_t row = 1; row < n; row++) {
+    size_t index = start;
+    for (size_t row = start + 1; row < n; row++) {
         if (std::abs(mat[row][col]) > std::abs(mat[index][col]))
             index = row;
     }
@@ -196,8 +195,8 @@ T det_gauss(const U &src) {
         return T{};
 
     for (size_t i = 0; i < n; i++) {
-        size_t max_index = mat.max_col_elem_index(i);
-        std::cout << "(" << max_index << ") "; /* TODO: del */
+        size_t max_index = mat.max_col_elem_index(i, i);
+
         if (is_zero(mat[max_index][i]))
             return T{};
 
@@ -206,23 +205,8 @@ T det_gauss(const U &src) {
             minus = !minus;
         }
 
-        for (size_t i1 = 0; i1 < n; i1++) {
-            for (size_t j1 = 0; j1 < n; j1++) {
-                std::cout << mat[i1][j1] << " ";
-            }
-            std::cout << std::endl;
-        }
-
         for (size_t j = i + 1; j < n; j++)
             mat.sub_row(j, i, mat[j][i] / mat[i][i]);
-
-        for (size_t i1 = 0; i1 < n; i1++) {
-            for (size_t j1 = 0; j1 < n; j1++) {
-                std::cout << mat[i1][j1] << " ";
-            }
-            std::cout << std::endl;
-        }
-        std::cout << std::endl;
     }
 
     T res = mat[0][0];

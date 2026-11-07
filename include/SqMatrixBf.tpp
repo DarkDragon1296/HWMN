@@ -155,13 +155,13 @@ void SqMatrixBf<T>::div_col(size_t col, T value) {
 }
 
 template <typename T>
-size_t SqMatrixBf<T>::max_row_elem_index(size_t row) const {
-    return operations::max_row_elem_index<SqMatrixBf<T>, T>(*this, row);
+size_t SqMatrixBf<T>::max_row_elem_index(size_t row, size_t start) const {
+    return operations::max_row_elem_index<SqMatrixBf<T>, T>(*this, row, start);
 }
 
 template <typename T>
-size_t SqMatrixBf<T>::max_col_elem_index(size_t col) const {
-    return operations::max_col_elem_index<SqMatrixBf<T>, T>(*this, col);
+size_t SqMatrixBf<T>::max_col_elem_index(size_t col, size_t start) const {
+    return operations::max_col_elem_index<SqMatrixBf<T>, T>(*this, col, start);
 }
 
 template <typename T>

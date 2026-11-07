@@ -59,12 +59,12 @@ TEST(SqMatrixBfRecursionTest, IntRecursionDetTest) {
     #endif
 }
 
-TEST(SqMatrixBfGaussTest, IntRecursionDetTest) {
-    auto test = [](const SqMatrixBf<int> &mat_value,
-                   const int result)
+TEST(SqMatrixBfGaussTest, FloatRecursionDetTest) {
+    auto test = [](const SqMatrixBf<float> &mat_value,
+                   const float result)
     {
-        SqMatrixBf<int> mat(mat_value);
-        EXPECT_EQ(mat.det_gauss(), result);
+        SqMatrixBf<float> mat(mat_value);
+        EXPECT_FLOAT_EQ(mat.det_gauss(), result);
     };
 
     /* --- TESTS --- */

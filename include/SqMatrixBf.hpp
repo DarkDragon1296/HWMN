@@ -78,8 +78,8 @@ class SqMatrixBf final {
     void div_row(size_t row, T value);
     void div_col(size_t col, T value);
 
-    size_t max_row_elem_index(size_t row) const;
-    size_t max_col_elem_index(size_t col) const;
+    size_t max_row_elem_index(size_t row, size_t start) const;
+    size_t max_col_elem_index(size_t col, size_t start) const;
 
     SqMatrixBf minor(size_t row, size_t col) const;
     SqMatrixBf mul(const SqMatrixBf &mat) const;

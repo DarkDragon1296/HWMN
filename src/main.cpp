@@ -26,9 +26,11 @@ void printf_matrix_jg(SqMatrixJg<T> &mat) {
 }
 
 int main(void) {
-    SqMatrixBf<int> mat{3, {1, 2, 3, 4, 5, 6, 7, 8, 9}};
+    SqMatrixBf<float> mat{3, {1.0f, 2.0f, 3.0f,
+                              4.0f, 5.0f, 6.0f,
+                              7.0f, 8.0f, 9.0f}};
 
-    int x = mat.det_gauss();
+    float x = mat.det_gauss();
     std::cout << x;
 
     return 0;
