@@ -254,4 +254,14 @@ T det_bareiss(const U &src) {
     return res;
 }
 
+template <typename U, typename T>
+T det_lu(const U &src) {
+    size_t n = src.size();
+#if 0
+    U l_mat, u_mat;
+#endif
+
+    return T{};
+}
+
 }

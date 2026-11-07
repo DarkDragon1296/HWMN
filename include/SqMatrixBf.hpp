@@ -89,6 +89,7 @@ class SqMatrixBf final {
     T det_gauss(void) const;
     T det_recursion(void) const;
     T det_bareiss(void) const;
+    T det_lu(void) const;
 };
 
 template <typename T>

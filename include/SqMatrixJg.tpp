@@ -205,3 +205,8 @@ template <typename T>
 T SqMatrixJg<T>::det_bareiss(void) const {
     return operations::det_bareiss<SqMatrixJg<T>, T>(*this);
 }
+
+template <typename T>
+T SqMatrixJg<T>::det_lu(void) const {
+    return operations::det_lu<SqMatrixJg<T>, T>(*this);
+}

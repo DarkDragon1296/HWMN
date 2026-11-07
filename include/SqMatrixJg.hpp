@@ -56,6 +56,7 @@ class SqMatrixJg final {
     T det_gauss(void) const;
     T det_recursion(void) const;
     T det_bareiss(void) const;
+    T det_lu(void) const;
 };
 
 #include "SqMatrixJg.tpp"
