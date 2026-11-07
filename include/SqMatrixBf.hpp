@@ -86,10 +86,12 @@ class SqMatrixBf final {
     SqMatrixBf transpose(void) const;
     SqMatrixBf neg(void) const;
     T tr(void) const;
-    T det_gauss(void) const;
+
+    T det_gauss    (void) const;
     T det_recursion(void) const;
-    T det_bareiss(void) const;
-    T det_lu(void) const;
+    T det_bareiss  (void) const;
+    T det_lu       (void) const;
+    T det_cholesky (void) const;
 };
 
 template <typename T>

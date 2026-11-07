@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 #include <cmath>
 #include <limits>
 #include <type_traits>
@@ -278,6 +277,7 @@ T det_lu(const U &src) {
                     l_mat[i][j] -= l_mat[i][k - 1] * u_mat[k - 1][j];
                 l_mat[i][j] /= u_mat[j][j];
             }
+
             if (i == j && is_zero(u_mat[i][i]))
                 return T{};
         }
@@ -289,6 +289,12 @@ T det_lu(const U &src) {
         res *= u_mat[i][i];
 
     return res;
+}
+
+template <typename U, typename T>
+T det_cholesky(const U &src) {
+
+    return T{};
 }
 
 }

@@ -210,3 +210,8 @@ template <typename T>
 T SqMatrixJg<T>::det_lu(void) const {
     return operations::det_lu<SqMatrixJg<T>, T>(*this);
 }
+
+template <typename T>
+T SqMatrixJg<T>::det_cholesky(void) const {
+    return operations::det_cholesky<SqMatrixJg<T>, T>(*this);
+}

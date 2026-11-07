@@ -208,3 +208,8 @@ template <typename T>
 T SqMatrixBf<T>::det_lu(void) const {
     return operations::det_lu<SqMatrixBf<T>, T>(*this);
 }
+    
+template <typename T>
+T SqMatrixBf<T>::det_cholesky(void) const {
+    return operations::det_cholesky<SqMatrixBf<T>, T>(*this);
+}
