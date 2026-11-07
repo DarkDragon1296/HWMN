@@ -3,6 +3,8 @@
 #include "SqMatrixBf.hpp"
 #include "detail/SqMatrixOp.tpp"
 
+namespace mat {
+
 template <typename T>
 SqMatrixBf<T>::SqMatrixBf(size_t n_) 
     : n{n_}, 
@@ -17,6 +19,30 @@ SqMatrixBf<T>::SqMatrixBf(size_t n_, std::initializer_list<T> values)
 template <typename T>
 size_t SqMatrixBf<T>::size() const { 
     return n;
+}
+
+template <typename T>
+template <bool Constness>
+SqMatrixBf<T>::ProxyRow<Constness>::ProxyRow(It row_) : row_data{row_} {}
+
+template <typename T>
+template <bool Constness>
+decltype(auto) 
+SqMatrixBf<T>::ProxyRow<Constness>::operator[](size_t col) const {
+    using iter_diff = typename std::iterator_traits<It>::difference_type;
+    return row_data[static_cast<iter_diff>(col)];
+}
+
+template <typename T>
+typename SqMatrixBf<T>::template ProxyRow<false> 
+SqMatrixBf<T>::operator[](size_t row) {
+    return ProxyRow<false>(data.begin() + n * row);
+}
+
+template <typename T>
+typename SqMatrixBf<T>::template ProxyRow<true> 
+SqMatrixBf<T>::operator[](size_t row) const {
+    return ProxyRow<true>(data.cbegin() + n * row);
 }
 
 template <typename T>
@@ -222,4 +248,6 @@ T SqMatrixBf<T>::det_lu(void) const {
 template <typename T>
 T SqMatrixBf<T>::det_cholesky(void) const {
     return operations::det_cholesky<SqMatrixBf<T>, T>(*this);
+}
+
 }

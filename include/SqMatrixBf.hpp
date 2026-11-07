@@ -2,6 +2,8 @@
 
 #include "VLA.hpp"
 
+namespace mat {
+
 template <typename T>
 class SqMatrixBf final {
     private:
@@ -12,31 +14,19 @@ class SqMatrixBf final {
     explicit SqMatrixBf(size_t n_);
     SqMatrixBf(size_t n_, std::initializer_list<T> values);
 
-    template <typename It>
+    template <bool Constness>
     class ProxyRow {
+        using It = std::conditional_t<Constness, 
+                                      typename buffers::VLA<T>::const_iterator,
+                                      typename buffers::VLA<T>::iterator>;
         It row_data;
         public:
-        ProxyRow(It row_) : row_data{row_} {}
-
-        decltype(auto) operator[](size_t col) const {
-            using iter_diff = typename std::iterator_traits<It>::difference_type;
-            return row_data[static_cast<iter_diff>(col)];
-        }
+        ProxyRow(It row_);
+        decltype(auto) operator[](size_t col) const;
     };
 
-    ProxyRow<typename buffers::VLA<T>::iterator> operator[](size_t row) {
-        using iter      = typename buffers::VLA<T>::iterator;
-        using iter_diff = typename std::iterator_traits<iter>::difference_type;
-        return ProxyRow(std::next(data.begin(), 
-                                  static_cast<iter_diff>(n * row)));
-    }
-
-    ProxyRow<typename buffers::VLA<T>::const_iterator> operator[](size_t row) const {
-        using iter      = typename buffers::VLA<T>::const_iterator;
-        using iter_diff = typename std::iterator_traits<iter>::difference_type;
-        return ProxyRow(std::next(data.cbegin(), 
-                        static_cast<iter_diff>(n * row)));
-    }
+    ProxyRow<false> operator[](size_t row);
+    ProxyRow<true>  operator[](size_t row) const;
 
     size_t size() const; 
 
@@ -83,5 +73,7 @@ class SqMatrixBf final {
 
 template <typename T>
 SqMatrixBf<T> operator*(const T &value, const SqMatrixBf<T> &mat);
+
+}
 
 #include "detail/SqMatrixBf.tpp"

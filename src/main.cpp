@@ -2,6 +2,8 @@
 #include "SqMatrixJg.hpp"
 #include <iostream>
 
+using namespace mat;
+
 template <typename T>
 void printf_matrix_bf(SqMatrixBf<T> &mat) {
     size_t n = mat.size();

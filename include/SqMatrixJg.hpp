@@ -2,6 +2,8 @@
 
 #include "VLA.hpp"
 
+namespace mat {
+
 template <typename T>
 class SqMatrixJg final {
     size_t n;
@@ -58,5 +60,7 @@ class SqMatrixJg final {
     T det_lu       (void) const;
     T det_cholesky (void) const;
 };
+
+}
 
 #include "detail/SqMatrixJg.tpp"

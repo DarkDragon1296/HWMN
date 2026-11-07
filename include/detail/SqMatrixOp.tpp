@@ -3,6 +3,8 @@
 #include <cmath>
 #include <type_traits>
 
+namespace mat {
+
 namespace operations {
 
 static const double FLOAT_CMP_PRECISION = 1e-6;
@@ -322,6 +324,8 @@ T det_cholesky(const U &src) {
     res *= res;
 
     return res;
+}
+
 }
 
 }

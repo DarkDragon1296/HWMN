@@ -3,6 +3,8 @@
 #include "SqMatrixJg.hpp"
 #include "detail/SqMatrixOp.tpp"
 
+namespace mat {
+
 template <typename T>
 SqMatrixJg<T>::SqMatrixJg(size_t n_, buffers::VLA<T> &&data_) : n{n_} {
     size_t sz = data_.size();
@@ -219,4 +221,6 @@ T SqMatrixJg<T>::det_lu(void) const {
 template <typename T>
 T SqMatrixJg<T>::det_cholesky(void) const {
     return operations::det_cholesky<SqMatrixJg<T>, T>(*this);
+}
+
 }
