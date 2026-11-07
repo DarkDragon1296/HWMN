@@ -27,14 +27,14 @@ void printf_matrix_jg(SqMatrixJg<T> &mat) {
 
 int main(void) {
     SqMatrixBf<float> mat2{2, {1.0f, 2.0f,
-                               3.0f, 4.0f}};
+                               2.0f, 5.0f}};
 
 
     SqMatrixBf<float> mat3{3, {1.0f, 2.0f, 3.0f,
                               4.0f, 5.0f, 6.0f,
                               7.0f, 8.0f, 9.0f}};
 
-    float x = mat2.det_lu();
+    float x = mat2.det_cholesky();
     std::cout << x;
 
     return 0;

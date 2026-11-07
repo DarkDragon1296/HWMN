@@ -210,7 +210,6 @@ T det_gauss(const U &src) {
     }
 
     T res = mat[0][0];
-
     for (size_t i = 1; i < n; i++)
         res *= mat[i][i];
 
@@ -284,7 +283,6 @@ T det_lu(const U &src) {
     }
 
     T res = u_mat[0][0];
-
     for (size_t i = 1; i < n; i++)
         res *= u_mat[i][i];
 
@@ -293,8 +291,40 @@ T det_lu(const U &src) {
 
 template <typename U, typename T>
 T det_cholesky(const U &src) {
+    size_t n = src.size();
+    U l_mat{n, {}};
 
-    return T{};
+    for (size_t i = 0; i < n; i++) {
+        for (size_t j = 0; j < n; j++) {
+            if (j > i) {
+                continue;
+            } else if (!i && !j) {
+                l_mat[0][0] = std::sqrt(src[0][0]);
+            } else if (!j) {
+                l_mat[i][0] = src[i][0] / l_mat[0][0];
+            } else if (i == j) {
+                l_mat[i][i] = src[i][i];
+                for (size_t k = 0; k <= i - 1; k++)
+                    l_mat[i][i] -= src[i][k] * src[i][k];
+                l_mat[i][i] = std::sqrt(l_mat[i][i]);
+
+                if (is_zero(l_mat[i][i]))
+                    return T{};
+            } else {
+                l_mat[i][j] = src[i][j];
+                for (size_t k = 0; k <= j - 1; k++)
+                    l_mat[i][j] -= src[i][k] * src[j][k];
+                l_mat[i][j] /= l_mat[j][j];
+            }
+        }
+    }
+
+    T res = l_mat[0][0];
+    for (size_t i = 1; i < n; i++)
+        res *= l_mat[i][i];
+    res *= res;
+
+    return res;
 }
 
 }
