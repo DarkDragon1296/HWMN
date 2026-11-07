@@ -1,11 +1,11 @@
 #pragma once
 
-#include "SqMatrixOp.tpp"
+#include "SqMatrixJg.hpp"
+#include "detail/SqMatrixOp.tpp"
 
 template <typename T>
-SqMatrixJg<T>::SqMatrixJg(size_t n_, std::vector<T> &&data_) : n{n_} {
+SqMatrixJg<T>::SqMatrixJg(size_t n_, buffers::VLA<T> &&data_) : n{n_} {
     size_t sz = data_.size();
-    data.resize(n, std::vector<T>(n, T{}));
 
     for (size_t i = 0; i < n; i++) {
         for (size_t j = 0; j < n; j++) {
@@ -15,6 +15,11 @@ SqMatrixJg<T>::SqMatrixJg(size_t n_, std::vector<T> &&data_) : n{n_} {
         }
     }
 };
+
+template <typename T>
+size_t SqMatrixJg<T>::size() const { 
+    return n;
+}
 
 template <typename T>
 SqMatrixJg<T> SqMatrixJg<T>::operator+(const SqMatrixJg &mat) const {

@@ -1,13 +1,16 @@
 #pragma once
 
-#include "SqMatrixOp.tpp"
+#include "SqMatrixBf.hpp"
+#include "detail/SqMatrixOp.tpp"
 
 template <typename T>
-SqMatrixBf<T>::SqMatrixBf(size_t n_, std::vector<T> &&data_) :
-                          n{n_}, data{std::move(data_)}
-{
-    data.resize(n * n);
-};
+SqMatrixBf<T>::SqMatrixBf(size_t n_, buffers::VLA<T> &&data_) 
+    : n{n_}, data{std::move(data_)} {};
+
+template <typename T>
+size_t SqMatrixBf<T>::size() const { 
+    return n;
+}
 
 template <typename T>
 SqMatrixBf<T> SqMatrixBf<T>::operator+(const SqMatrixBf &mat) const {

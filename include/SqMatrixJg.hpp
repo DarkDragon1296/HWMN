@@ -1,27 +1,25 @@
 #pragma once
 
-#include <vector>
+#include "VLA.hpp"
 
 template <typename T>
 class SqMatrixJg final {
     size_t n;
-    std::vector<std::vector<T>> data{};
+    buffers::VLA<buffers::VLA<T>> data{};
 
     public:
 
-    SqMatrixJg(size_t n_, std::vector<T> &&data_ = T{});
+    SqMatrixJg(size_t n_, buffers::VLA<T> &&data_ = T{});
 
-    std::vector<T> &operator[](size_t row) {
+    buffers::VLA<T> &operator[](size_t row) {
         return data[row];
     }
 
-    const std::vector<T> &operator[](size_t row) const {
+    const buffers::VLA<T> &operator[](size_t row) const {
         return data[row];
     }
 
-    size_t size() const { /* TODO: move realization */
-        return n;
-    }
+    size_t size() const;
 
     SqMatrixJg operator+(const SqMatrixJg &mat) const;
     SqMatrixJg operator-(const SqMatrixJg &mat) const;
@@ -61,4 +59,4 @@ class SqMatrixJg final {
     T det_cholesky (void) const;
 };
 
-#include "SqMatrixJg.tpp"
+#include "detail/SqMatrixJg.tpp"

@@ -1,20 +1,17 @@
 #pragma once
 
 #include <cmath>
-#include <limits>
 #include <type_traits>
 
 namespace operations {
 
+static const double FLOAT_CMP_PRECISION = 1e-6;
+
 template <typename T>
-bool is_zero(T value) {
-    if (std::is_integral_v<T>)
-        return value == 0;
-
-    if (std::is_floating_point_v<T>)
-        return std::abs(value) <= std::numeric_limits<T>::epsilon();
-
-    return false;
+inline bool is_zero(T value) {
+    return std::is_floating_point_v<T> 
+           ? std::abs(value) <= FLOAT_CMP_PRECISION
+           : value == T{};
 }
 
 template <typename U, typename T>

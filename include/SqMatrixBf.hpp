@@ -1,57 +1,60 @@
 #pragma once
 
-#include <vector> // TODO: write our version
+#include "VLA.hpp"
 
 template <typename T>
 class SqMatrixBf final {
     size_t n;
-    std::vector<T> data;
+    buffers::VLA<T> data;
 
     public:
 
-    SqMatrixBf(size_t n_, std::vector<T> &&data_ = T{});
+    SqMatrixBf(size_t n_, buffers::VLA<T> &&data_ = T{});
 
     class ProxyRow {
-        typename std::vector<T>::iterator row_data;
+        typename buffers::VLA<T>::iterator row_data;
         public:
-        ProxyRow(typename std::vector<T>::iterator row_) : row_data{row_} {}
+        ProxyRow(typename buffers::VLA<T>::iterator row_) : row_data{row_} {}
 
         T &operator[](size_t col) {
-            return *(row_data + static_cast<int>(col));
+            return *(row_data + col);
         }
 
         const T &operator[](size_t col) const {
-            return *(row_data + static_cast<int>(col));
+            return *(row_data + col);
         }
     };
 
     class ConstProxyRow {
-        typename std::vector<T>::const_iterator row_data;
+        typename buffers::VLA<T>::const_iterator row_data;
         public:
-        ConstProxyRow(typename std::vector<T>::const_iterator row_) :
-                      row_data{row_} {}
+        ConstProxyRow(typename buffers::VLA<T>::const_iterator row_) 
+            : row_data{row_} {}
 
         T &operator[](size_t col) {
-            return *(row_data + static_cast<int>(col));
+            return *(row_data + col);
         }
 
         const T &operator[](size_t col) const {
-            return *(row_data + static_cast<int>(col));
+            return *(row_data + col);
         }
     };
 
     ProxyRow operator[](size_t row) {
-        return ProxyRow(std::next(data.begin(), static_cast<int>(n * row)));
+        using iter  = typename buffers::VLA<T>::iterator;
+        using iter_diff = typename std::iterator_traits<iter>::difference_type;
+        return ProxyRow(std::next(data.begin(), 
+                                  static_cast<iter_diff>(n * row)));
     }
 
     const ConstProxyRow operator[](size_t row) const {
-        return ConstProxyRow(std::next(data.cbegin(),
-                                       static_cast<int>(n * row)));
+        using iter  = typename buffers::VLA<T>::const_iterator;
+        using iter_diff = typename std::iterator_traits<iter>::difference_type;
+        return ConstProxyRow(std::next(data.cbegin(), 
+                                       static_cast<iter_diff>(n * row)));
     }
 
-    size_t size() const { /* TODO: move realization */
-        return n;
-    }
+    size_t size() const; 
 
     /* TODO: check SqMatrixBf &method() &; */
 
@@ -97,4 +100,4 @@ class SqMatrixBf final {
 template <typename T>
 SqMatrixBf<T> operator*(const T &value, const SqMatrixBf<T> &mat);
 
-#include "SqMatrixBf.tpp"
+#include "detail/SqMatrixBf.tpp"

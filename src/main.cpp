@@ -1,7 +1,6 @@
 #include "SqMatrixBf.hpp"
 #include "SqMatrixJg.hpp"
 #include <iostream>
-#include <vector>
 
 template <typename T>
 void printf_matrix_bf(SqMatrixBf<T> &mat) {
@@ -34,7 +33,7 @@ int main(void) {
                               4.0f, 5.0f, 6.0f,
                               7.0f, 8.0f, 9.0f}};
 
-    float x = mat2.det_cholesky();
+    float x = mat2.det_recursion();
     std::cout << x;
 
     return 0;
