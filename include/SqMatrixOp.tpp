@@ -219,4 +219,9 @@ T det_gauss(const U &src) {
     return res;
 }
 
+template <typename U, typename T>
+T det_bareiss(const U &src) {
+    return T{};
+}
+
 }
