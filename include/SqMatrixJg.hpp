@@ -6,27 +6,30 @@ namespace mat {
 
 template <typename T>
 class SqMatrixJg final {
-    size_t n;
-    buffers::VLA<buffers::VLA<T>> data{};
+    private:
+    size_t n = 0;
+    buffers::VLA<T> data = buffers::VLA<T>::create(0);
+    buffers::VLA<size_t> row_offsets = buffers::VLA<T>::create(0);
 
     public:
+    explicit SqMatrixJg(size_t n_);
+    SqMatrixJg(size_t n_, std::initializer_list<T> values);
 
-    SqMatrixJg(size_t n_, buffers::VLA<T> &&data_ = T{});
+    template <bool Constness>
+    class ProxyRow {
+        using It = std::conditional_t<Constness, 
+                                      typename buffers::VLA<T>::const_iterator,
+                                      typename buffers::VLA<T>::iterator>;
+        It row_data;
+        public:
+        ProxyRow(It row_);
+        decltype(auto) operator[](size_t col) const;
+    };
 
-    buffers::VLA<T> &operator[](size_t row) {
-        return data[row];
-    }
+    ProxyRow<false> operator[](size_t row);
+    ProxyRow<true>  operator[](size_t row) const;
 
-    const buffers::VLA<T> &operator[](size_t row) const {
-        return data[row];
-    }
-
-    size_t size() const;
-
-    SqMatrixJg operator+(const SqMatrixJg &mat) const;
-    SqMatrixJg operator-(const SqMatrixJg &mat) const;
-    SqMatrixJg operator*(const T &value) const;
-    SqMatrixJg operator/(const T &value) const;
+    size_t size() const; 
 
     void operator+=(const SqMatrixJg &mat);
     void operator-=(const SqMatrixJg &mat);
@@ -45,8 +48,9 @@ class SqMatrixJg final {
     void mul_col(size_t col, T value);
     void div_row(size_t row, T value);
     void div_col(size_t col, T value);
-    size_t max_row_elem_index(size_t row) const;
-    size_t max_col_elem_index(size_t col) const;
+
+    size_t max_row_elem_index(size_t row, size_t start) const;
+    size_t max_col_elem_index(size_t col, size_t start) const;
 
     SqMatrixJg minor(size_t row, size_t col) const;
     SqMatrixJg mul(const SqMatrixJg &mat) const;
@@ -60,6 +64,21 @@ class SqMatrixJg final {
     T det_lu       (void) const;
     T det_cholesky (void) const;
 };
+
+template <typename T>
+SqMatrixJg<T> operator+(const SqMatrixJg<T> lhs, const SqMatrixJg<T> &rhs);
+
+template <typename T>
+SqMatrixJg<T> operator-(const SqMatrixJg<T> lhs, const SqMatrixJg<T> &rhs);
+
+template <typename T>
+SqMatrixJg<T> operator*(const SqMatrixJg<T> lhs, const T &rhs);
+
+template <typename T>
+SqMatrixJg<T> operator*(const T &lhs, const SqMatrixJg<T> rhs);
+
+template <typename T>
+SqMatrixJg<T> operator/(const SqMatrixJg<T> lhs, const T &rhs);
 
 }
 

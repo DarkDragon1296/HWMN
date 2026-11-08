@@ -27,9 +27,9 @@ void printf_matrix_jg(SqMatrixJg<T> &mat) {
 }
 
 int main(void) {
-    SqMatrixBf<float> mat2(2, {1.0f, 2.0f,
+    SqMatrixJg<float> mat2(2, {1.0f, 2.0f,
                                2.0f, 5.0f});
-    printf_matrix_bf(mat2);
+    printf_matrix_jg(mat2);
 
     SqMatrixBf<float> mat3(3, {1.0f, 2.0f, 3.0f,
                                4.0f, 5.0f, 6.0f,

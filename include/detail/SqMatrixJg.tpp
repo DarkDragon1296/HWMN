@@ -6,17 +6,25 @@
 namespace mat {
 
 template <typename T>
-SqMatrixJg<T>::SqMatrixJg(size_t n_, buffers::VLA<T> &&data_) : n{n_} {
-    size_t sz = data_.size();
+SqMatrixJg<T>::SqMatrixJg(size_t n_) 
+    : n{n_}, 
+      data{buffers::VLA<T>::create(n_ * n_)},
+      row_offsets{buffers::VLA<size_t>::create(n_)}
+{
+    for (size_t i = 0; i < n; i++)
+        row_offsets[i] = i * n;
+}
 
-    for (size_t i = 0; i < n; i++) {
-        for (size_t j = 0; j < n; j++) {
-            if (i * n + j >= sz)
-                return;
-            data[i][j] = data_[i * n + j];
-        }
-    }
-};
+template <typename T>
+SqMatrixJg<T>::SqMatrixJg(size_t n_, 
+                          std::initializer_list<T> values)
+    : n{n_}, 
+      data(n_ * n_, values),
+      row_offsets{buffers::VLA<size_t>::create(n_)}
+{
+    for (size_t i = 0; i < n; i++)
+        row_offsets[i] = i * n;
+} 
 
 template <typename T>
 size_t SqMatrixJg<T>::size() const { 
@@ -24,52 +32,55 @@ size_t SqMatrixJg<T>::size() const {
 }
 
 template <typename T>
-SqMatrixJg<T> SqMatrixJg<T>::operator+(const SqMatrixJg &mat) const {
-    SqMatrixJg<T> res_mat(n, {});
-    for (size_t i = 0; i < n; i++) { 
-        for (size_t j = 0; j < n; j++) {
-            res_mat[i][j] = (*this)[i][j] + mat[i][j];
-        }
-    }
-    return res_mat;
+template <bool Constness>
+SqMatrixJg<T>::ProxyRow<Constness>::ProxyRow(It row_) : row_data{row_} {}
+
+template <typename T>
+template <bool Constness>
+decltype(auto) // the return type is deduced (either const T& or T&) 
+SqMatrixJg<T>::ProxyRow<Constness>::operator[](size_t col) const {
+    return row_data[col];
 }
 
 template <typename T>
-SqMatrixJg<T> SqMatrixJg<T>::operator-(const SqMatrixJg &mat) const {
-    SqMatrixJg<T> res_mat(n, {});
-    for (size_t i = 0; i < n; i++) { 
-        for (size_t j = 0; j < n; j++) {
-            res_mat[i][j] = (*this)[i][j] - mat[i][j];
-        }
-    }
-    return res_mat;
+typename SqMatrixJg<T>::template ProxyRow<false> 
+SqMatrixJg<T>::operator[](size_t row) {
+    return ProxyRow<false>(data.begin() + row_offsets[row]);
 }
 
 template <typename T>
-SqMatrixJg<T> SqMatrixJg<T>::operator*(const T &value) const {
-    SqMatrixJg<T> res_mat(n, {});
-    for (size_t i = 0; i < n; i++) { 
-        for (size_t j = 0; j < n; j++) {
-            res_mat[i][j] = (*this)[i][j] * value;
-        }
-    }
-    return res_mat;
+typename SqMatrixJg<T>::template ProxyRow<true> 
+SqMatrixJg<T>::operator[](size_t row) const {
+    return ProxyRow<true>(data.cbegin() + row_offsets[row]);
 }
 
 template <typename T>
-SqMatrixJg<T> operator*(const T &value, const SqMatrixJg<T> &mat) {
-    return mat * value;
+SqMatrixJg<T> operator+(SqMatrixJg<T> lhs, const SqMatrixJg<T> &rhs) {
+    lhs += rhs;
+    return lhs;
 }
 
 template <typename T>
-SqMatrixJg<T> SqMatrixJg<T>::operator/(const T &value) const {
-    SqMatrixJg<T> res_mat(n, {});
-    for (size_t i = 0; i < n; i++) { 
-        for (size_t j = 0; j < n; j++) {
-            res_mat[i][j] = (*this)[i][j] / value;
-        }
-    }
-    return res_mat;
+SqMatrixJg<T> operator-(SqMatrixJg<T> lhs, const SqMatrixJg<T> &rhs) {
+    lhs -= rhs;
+    return lhs;
+}
+
+template <typename T>
+SqMatrixJg<T> operator*(const SqMatrixJg<T> &lhs, const T &rhs) {
+    lhs *= rhs;
+    return lhs;
+}
+
+template <typename T>
+SqMatrixJg<T> operator*(const T &lhs, const SqMatrixJg<T> &rhs) {
+    return rhs * lhs;
+}
+
+template <typename T>
+SqMatrixJg<T> operator/(const SqMatrixJg<T> &lhs, const T &rhs) {
+    lhs /= rhs;
+    return lhs;
 }
 
 template <typename T>
@@ -110,37 +121,32 @@ void SqMatrixJg<T>::operator/=(const T &value) {
 
 template <typename T>
 void SqMatrixJg<T>::swap_rows(size_t i, size_t j) {
-    std::swap((*this)[i], (*this)[j]);
+    std::swap(row_offsets[i], row_offsets[j]);
 }
 
 template <typename T>
 void SqMatrixJg<T>::swap_cols(size_t i, size_t j) {
-    T tmp;
-    for (int l = 0; l < n; l++) {
-        tmp = (*this)[l][i];
-        (*this)[l][i] = (*this)[l][j];
-        (*this)[l][j] = tmp;
-    }
+    operations::swap_cols<SqMatrixJg<T>, T>(*this, i, j);
 }
 
 template <typename T>
 void SqMatrixJg<T>::add_row(size_t i, size_t j, T coeff) {
-    operations::add_row(*this, i, j, coeff);
+    operations::add_row<SqMatrixJg<T>, T>(*this, i, j, coeff);
 }
 
 template <typename T>
 void SqMatrixJg<T>::add_col(size_t i, size_t j, T coeff) {
-    operations::add_col(*this, i, j, coeff);
+    operations::add_col<SqMatrixJg<T>, T>(*this, i, j, coeff);
 }
 
 template <typename T>
 void SqMatrixJg<T>::sub_row(size_t i, size_t j, T coeff) {
-    operations::sub_row(*this, i, j, coeff);
+    operations::sub_row<SqMatrixJg<T>, T>(*this, i, j, coeff);
 }
 
 template <typename T>
 void SqMatrixJg<T>::sub_col(size_t i, size_t j, T coeff) {
-    operations::sub_col(*this, i, j, coeff);
+    operations::sub_col<SqMatrixJg<T>, T>(*this, i, j, coeff);
 }
 
 template <typename T>
@@ -164,13 +170,13 @@ void SqMatrixJg<T>::div_col(size_t col, T value) {
 }
 
 template <typename T>
-size_t SqMatrixJg<T>::max_row_elem_index(size_t row) const {
-    return operations::max_row_elem_index<SqMatrixJg<T>, T>(*this, row);
+size_t SqMatrixJg<T>::max_row_elem_index(size_t row, size_t start) const {
+    return operations::max_row_elem_index<SqMatrixJg<T>, T>(*this, row, start);
 }
 
 template <typename T>
-size_t SqMatrixJg<T>::max_col_elem_index(size_t col) const {
-    return operations::max_col_elem_index<SqMatrixJg<T>, T>(*this, col);
+size_t SqMatrixJg<T>::max_col_elem_index(size_t col, size_t start) const {
+    return operations::max_col_elem_index<SqMatrixJg<T>, T>(*this, col, start);
 }
 
 template <typename T>
@@ -217,7 +223,7 @@ template <typename T>
 T SqMatrixJg<T>::det_lu(void) const {
     return operations::det_lu<SqMatrixJg<T>, T>(*this);
 }
-
+    
 template <typename T>
 T SqMatrixJg<T>::det_cholesky(void) const {
     return operations::det_cholesky<SqMatrixJg<T>, T>(*this);
