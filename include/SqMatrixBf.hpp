@@ -1,6 +1,7 @@
 #pragma once
 
 #include "VLA.hpp"
+#include "ext.hpp"
 #include <ostream>
 
 namespace mat {
@@ -79,14 +80,16 @@ template <typename T>
 SqMatrixBf<T> operator-(const SqMatrixBf<T> lhs, const SqMatrixBf<T> &rhs);
 
 template <typename T>
-SqMatrixBf<T> operator*(const SqMatrixBf<T> lhs, const T &rhs);
+SqMatrixBf<T> operator*(SqMatrixBf<T> lhs, 
+                        const ext::identity_type_t<T> &rhs);
 
 template <typename T>
-SqMatrixBf<T> operator*(const T &lhs, const SqMatrixBf<T> rhs);
+SqMatrixBf<T> operator*(const ext::identity_type_t<T> &lhs, 
+                        SqMatrixBf<T> rhs);
 
 template <typename T>
-SqMatrixBf<T> operator/(const SqMatrixBf<T> lhs, const T &rhs);
+SqMatrixBf<T> operator/(SqMatrixBf<T> lhs, 
+                        const ext::identity_type_t<T> &rhs);
 
 }
-
 #include "detail/SqMatrixBf.tpp"

@@ -32,8 +32,11 @@ VLA<T> VLA<T>::create(size_t n_, T value) {
     if (!n_)
         return vla;
 
-    vla.data = new T[n_]{value};
+    vla.data = new T[n_];
     vla.n = n_;
+    for (size_t i = 0; i < n_; i++)
+        vla[i] = value;
+
     return vla;
 }
 

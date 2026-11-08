@@ -92,18 +92,22 @@ SqMatrixJg<T> operator-(SqMatrixJg<T> lhs, const SqMatrixJg<T> &rhs) {
 }
 
 template <typename T>
-SqMatrixJg<T> operator*(const SqMatrixJg<T> &lhs, const T &rhs) {
+SqMatrixJg<T> operator*(SqMatrixJg<T> lhs, 
+                        const ext::identity_type_t<T> &rhs) {
     lhs *= rhs;
     return lhs;
 }
 
 template <typename T>
-SqMatrixJg<T> operator*(const T &lhs, const SqMatrixJg<T> &rhs) {
-    return rhs * lhs;
+SqMatrixJg<T> operator*(const ext::identity_type_t<T> &lhs, 
+                        SqMatrixJg<T> rhs) {
+    rhs *= lhs;
+    return rhs;
 }
 
 template <typename T>
-SqMatrixJg<T> operator/(const SqMatrixJg<T> &lhs, const T &rhs) {
+SqMatrixJg<T> operator/(SqMatrixJg<T> lhs, 
+                        const ext::identity_type_t<T> &rhs) {
     lhs /= rhs;
     return lhs;
 }

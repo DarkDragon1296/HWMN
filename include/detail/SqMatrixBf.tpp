@@ -79,18 +79,22 @@ SqMatrixBf<T> operator-(SqMatrixBf<T> lhs, const SqMatrixBf<T> &rhs) {
 }
 
 template <typename T>
-SqMatrixBf<T> operator*(const SqMatrixBf<T> &lhs, const T &rhs) {
+SqMatrixBf<T> operator*(SqMatrixBf<T> lhs, 
+                        const ext::identity_type_t<T> &rhs) {
     lhs *= rhs;
     return lhs;
 }
 
 template <typename T>
-SqMatrixBf<T> operator*(const T &lhs, const SqMatrixBf<T> &rhs) {
-    return rhs * lhs;
+SqMatrixBf<T> operator*(const ext::identity_type_t<T> &lhs, 
+                        SqMatrixBf<T> rhs) {
+    rhs *= lhs;
+    return rhs;
 }
 
 template <typename T>
-SqMatrixBf<T> operator/(const SqMatrixBf<T> &lhs, const T &rhs) {
+SqMatrixBf<T> operator/(SqMatrixBf<T> lhs, 
+                        const ext::identity_type_t<T> &rhs) {
     lhs /= rhs;
     return lhs;
 }
