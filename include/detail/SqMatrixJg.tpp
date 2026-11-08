@@ -32,6 +32,11 @@ size_t SqMatrixJg<T>::size() const {
 }
 
 template <typename T>
+void SqMatrixJg<T>::dump(std::ostream &sink) const {
+    operations::dump<SqMatrixJg<T>>(*this, sink);
+}
+
+template <typename T>
 template <bool Constness>
 SqMatrixJg<T>::ProxyRow<Constness>::ProxyRow(It row_) : row_data{row_} {}
 

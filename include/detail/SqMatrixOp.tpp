@@ -1,12 +1,24 @@
 #pragma once
 
 #include <cmath>
+#include <ostream>
 #include <type_traits>
 
 namespace mat {
 namespace operations {
 
 static const double FLOAT_CMP_PRECISION = 1e-6;
+
+template <typename T>
+void dump(const T &mat, std::ostream &sink) {
+    size_t n = mat.size();
+    for (size_t i = 0; i < n; i++) { 
+        for (size_t j = 0; j < n; j++) {
+            sink << mat[i][j] << " ";
+        }
+        sink << std::endl;
+    }
+}
 
 template <typename T>
 bool is_zero(T value) {

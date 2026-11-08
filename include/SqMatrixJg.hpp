@@ -1,6 +1,7 @@
 #pragma once
 
 #include "VLA.hpp"
+#include <ostream>
 
 namespace mat {
 
@@ -30,6 +31,8 @@ class SqMatrixJg final {
     ProxyRow<true>  operator[](size_t row) const;
 
     size_t size() const; 
+
+    void dump(std::ostream& sink) const;
 
     void operator+=(const SqMatrixJg &mat);
     void operator-=(const SqMatrixJg &mat);

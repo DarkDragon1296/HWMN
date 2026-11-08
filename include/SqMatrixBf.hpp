@@ -1,6 +1,7 @@
 #pragma once
 
 #include "VLA.hpp"
+#include <ostream>
 
 namespace mat {
 
@@ -30,8 +31,9 @@ class SqMatrixBf final {
 
     size_t size() const; 
 
-    /* TODO: check SqMatrixBf &method() &; */
+    void dump(std::ostream& sink) const;
 
+    /* TODO: check SqMatrixBf &method() &; */
 
     void operator+=(const SqMatrixBf &mat);
     void operator-=(const SqMatrixBf &mat);

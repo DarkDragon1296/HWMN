@@ -23,6 +23,11 @@ size_t SqMatrixBf<T>::size() const {
 }
 
 template <typename T>
+void SqMatrixBf<T>::dump(std::ostream &sink) const {
+    operations::dump<SqMatrixBf<T>>(*this, sink);
+}
+
+template <typename T>
 template <bool Constness>
 SqMatrixBf<T>::ProxyRow<Constness>::ProxyRow(It row_) : row_data{row_} {}
 
