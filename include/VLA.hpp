@@ -28,8 +28,8 @@ class VLA final {
     /// Allocates exactly values.size() T's and copies them over
     VLA(std::initializer_list<T> values);
 
-    /// Allocates n_ values and default inits them if T is default init-able
-    static VLA create(size_t n_);
+    /// Allocates n_ values and default inits them with selected value
+    static VLA create(size_t n_, T value = T{});
 
     public: // Rule of Five
     VLA(const VLA &rhs);

@@ -10,6 +10,22 @@ SqMatrixBf<T>::SqMatrixBf(size_t n_)
     : n{n_}, 
       data{buffers::VLA<T>::create(n_ * n_)} {}
 
+template <typename T>
+SqMatrixBf<T> SqMatrixBf<T>::create_scalar(size_t n_, T value) {
+    SqMatrixBf<T> mat;
+    mat.data = buffers::VLA<T>::create(n_ * n_, value);
+    mat.n = n_;
+    return mat;
+}
+
+template <typename T>
+SqMatrixBf<T> create_eye(size_t n_, T identity_value) {
+    SqMatrixBf<T> mat(n_);
+    for (size_t i = 0; i < n_; i++)
+        mat[i][i] = identity_value;
+
+    return mat;
+}
 
 template <typename T>
 SqMatrixBf<T>::SqMatrixBf(size_t n_, 

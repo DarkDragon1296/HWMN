@@ -8,12 +8,15 @@ namespace mat {
 template <typename T>
 class SqMatrixBf final {
     private:
-    size_t n;
+    size_t n = 0;
     buffers::VLA<T> data;
 
     public:
+    SqMatrixBf() = default;
     explicit SqMatrixBf(size_t n_);
     SqMatrixBf(size_t n_, std::initializer_list<T> values);
+    static SqMatrixBf create_scalar(size_t n_, T value);
+    static SqMatrixBf create_eye(size_t n_, T identity_value);
 
     template <bool Constness>
     class ProxyRow {

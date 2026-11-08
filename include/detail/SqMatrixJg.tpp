@@ -27,6 +27,26 @@ SqMatrixJg<T>::SqMatrixJg(size_t n_,
 } 
 
 template <typename T>
+SqMatrixJg<T> SqMatrixJg<T>::create_scalar(size_t n_, T value) {
+    SqMatrixJg<T> mat;
+    mat.data = buffers::VLA<T>::create(n_ * n_, value);
+    mat.row_offsets = buffers::VLA<size_t>::create(n_);
+    for (size_t i = 0; i < n_; i++)
+        mat.row_offsets[i] = i * n_;
+    mat.n = n_;
+    return mat;
+}
+
+template <typename T>
+SqMatrixJg<T> create_eye(size_t n_, T identity_value) {
+    SqMatrixJg<T> mat(n_);
+    for (size_t i = 0; i < n_; i++)
+        mat[i][i] = identity_value;
+
+    return mat;
+}
+
+template <typename T>
 size_t SqMatrixJg<T>::size() const { 
     return n;
 }

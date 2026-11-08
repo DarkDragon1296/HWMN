@@ -9,12 +9,15 @@ template <typename T>
 class SqMatrixJg final {
     private:
     size_t n = 0;
-    buffers::VLA<T> data = buffers::VLA<T>::create(0);
-    buffers::VLA<size_t> row_offsets = buffers::VLA<T>::create(0);
+    buffers::VLA<T> data;
+    buffers::VLA<size_t> row_offsets;
 
     public:
+    SqMatrixJg() = default;
     explicit SqMatrixJg(size_t n_);
     SqMatrixJg(size_t n_, std::initializer_list<T> values);
+    static SqMatrixJg create_scalar(size_t n_, T value);
+    static SqMatrixJg create_eye(size_t n_, T identity_value);
 
     template <bool Constness>
     class ProxyRow {
