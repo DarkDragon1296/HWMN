@@ -32,10 +32,6 @@ class SqMatrixBf final {
 
     /* TODO: check SqMatrixBf &method() &; */
 
-    SqMatrixBf operator+(const SqMatrixBf &mat) const;
-    SqMatrixBf operator-(const SqMatrixBf &mat) const;
-    SqMatrixBf operator*(const T &value) const;
-    SqMatrixBf operator/(const T &value) const;
 
     void operator+=(const SqMatrixBf &mat);
     void operator-=(const SqMatrixBf &mat);
@@ -72,7 +68,19 @@ class SqMatrixBf final {
 };
 
 template <typename T>
-SqMatrixBf<T> operator*(const T &value, const SqMatrixBf<T> &mat);
+SqMatrixBf<T> operator+(const SqMatrixBf<T> lhs, const SqMatrixBf<T> &rhs);
+
+template <typename T>
+SqMatrixBf<T> operator-(const SqMatrixBf<T> lhs, const SqMatrixBf<T> &rhs);
+
+template <typename T>
+SqMatrixBf<T> operator*(const SqMatrixBf<T> lhs, const T &rhs);
+
+template <typename T>
+SqMatrixBf<T> operator*(const T &lhs, const SqMatrixBf<T> rhs);
+
+template <typename T>
+SqMatrixBf<T> operator/(const SqMatrixBf<T> lhs, const T &rhs);
 
 }
 

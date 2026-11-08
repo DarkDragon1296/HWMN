@@ -12,7 +12,8 @@ SqMatrixBf<T>::SqMatrixBf(size_t n_)
 
 
 template <typename T>
-SqMatrixBf<T>::SqMatrixBf(size_t n_, std::initializer_list<T> values)
+SqMatrixBf<T>::SqMatrixBf(size_t n_, 
+                          std::initializer_list<T> values)
     : n{n_}, 
       data(n_ * n_, values) {} // Fun fact! () matter here specifically
 
@@ -27,10 +28,9 @@ SqMatrixBf<T>::ProxyRow<Constness>::ProxyRow(It row_) : row_data{row_} {}
 
 template <typename T>
 template <bool Constness>
-decltype(auto) 
+decltype(auto) // the return type is deduced (either const T& or T&) 
 SqMatrixBf<T>::ProxyRow<Constness>::operator[](size_t col) const {
-    using iter_diff = typename std::iterator_traits<It>::difference_type;
-    return row_data[static_cast<iter_diff>(col)];
+    return row_data[col];
 }
 
 template <typename T>
@@ -46,52 +46,32 @@ SqMatrixBf<T>::operator[](size_t row) const {
 }
 
 template <typename T>
-SqMatrixBf<T> SqMatrixBf<T>::operator+(const SqMatrixBf &mat) const {
-    SqMatrixBf<T> res_mat(n, {});
-    for (size_t i = 0; i < n; i++) { 
-        for (size_t j = 0; j < n; j++) {
-            res_mat[i][j] = (*this)[i][j] + mat[i][j];
-        }
-    }
-    return res_mat;
+SqMatrixBf<T> operator+(SqMatrixBf<T> lhs, const SqMatrixBf<T> &rhs) {
+    lhs += rhs;
+    return lhs;
 }
 
 template <typename T>
-SqMatrixBf<T> SqMatrixBf<T>::operator-(const SqMatrixBf &mat) const {
-    SqMatrixBf<T> res_mat(n, {});
-    for (size_t i = 0; i < n; i++) { 
-        for (size_t j = 0; j < n; j++) {
-            res_mat[i][j] = (*this)[i][j] - mat[i][j];
-        }
-    }
-    return res_mat;
+SqMatrixBf<T> operator-(SqMatrixBf<T> lhs, const SqMatrixBf<T> &rhs) {
+    lhs -= rhs;
+    return lhs;
 }
 
 template <typename T>
-SqMatrixBf<T> SqMatrixBf<T>::operator*(const T &value) const {
-    SqMatrixBf<T> res_mat(n, {});
-    for (size_t i = 0; i < n; i++) { 
-        for (size_t j = 0; j < n; j++) {
-            res_mat[i][j] = (*this)[i][j] * value;
-        }
-    }
-    return res_mat;
+SqMatrixBf<T> operator*(const SqMatrixBf<T> &lhs, const T &rhs) {
+    lhs *= rhs;
+    return lhs;
 }
 
 template <typename T>
-SqMatrixBf<T> operator*(const T &value, const SqMatrixBf<T> &mat) {
-    return mat * value;
+SqMatrixBf<T> operator*(const T &lhs, const SqMatrixBf<T> &rhs) {
+    return rhs * lhs;
 }
 
 template <typename T>
-SqMatrixBf<T> SqMatrixBf<T>::operator/(const T &value) const {
-    SqMatrixBf<T> res_mat(n, {});
-    for (size_t i = 0; i < n; i++) { 
-        for (size_t j = 0; j < n; j++) {
-            res_mat[i][j] = (*this)[i][j] / value;
-        }
-    }
-    return res_mat;
+SqMatrixBf<T> operator/(const SqMatrixBf<T> &lhs, const T &rhs) {
+    lhs /= rhs;
+    return lhs;
 }
 
 template <typename T>
@@ -142,12 +122,7 @@ void SqMatrixBf<T>::swap_rows(size_t i, size_t j) {
 
 template <typename T>
 void SqMatrixBf<T>::swap_cols(size_t i, size_t j) {
-    T tmp;
-    for (int l = 0; l < n; l++) {
-        tmp = (*this)[l][i];
-        (*this)[l][i] = (*this)[l][j];
-        (*this)[l][j] = tmp;
-    }
+    operations::swap_cols<SqMatrixBf<T>, T>(*this, i, j);
 }
 
 template <typename T>

@@ -4,87 +4,79 @@
 #include <type_traits>
 
 namespace mat {
-
 namespace operations {
 
 static const double FLOAT_CMP_PRECISION = 1e-6;
 
 template <typename T>
-inline bool is_zero(T value) {
+bool is_zero(T value) {
     return std::is_floating_point_v<T> 
            ? std::abs(value) <= FLOAT_CMP_PRECISION
            : value == T{};
 }
 
 template <typename U, typename T>
-void add_row(U &mat, size_t i, size_t j, T coeff) {
-    size_t n = mat.size();
-    for (size_t col = 0; col < n; col++) {
-        mat[i][col] += coeff * mat[j][col];
+void swap_cols(U &mat, size_t i, size_t j) {
+    T tmp;
+    for (int l = 0, n = mat.size(); l < n; l++) {
+        tmp = mat[l][i];
+        mat[l][i] = mat[l][j];
+        mat[l][j] = tmp;
     }
+}
+
+template <typename U, typename T>
+void add_row(U &mat, size_t i, size_t j, T coeff) {
+    for (size_t col = 0, n = mat.size(); col < n; col++)
+        mat[i][col] += coeff * mat[j][col];
 }
 
 template <typename U, typename T>
 void add_col(U &mat, size_t i, size_t j, T coeff) {
-    size_t n = mat.size();
-    for (size_t row = 0; row < n; row++) {
+    for (size_t row = 0, n = mat.size(); row < n; row++)
         mat[row][i] += coeff * mat[row][j];
-    }
 }
 
 template <typename U, typename T>
 void sub_row(U &mat, size_t i, size_t j, T coeff) {
-    size_t n = mat.size();
-    for (size_t col = 0; col < n; col++) {
+    for (size_t col = 0, n = mat.size(); col < n; col++)
         mat[i][col] -= coeff * mat[j][col];
-    }
 }
 
 template <typename U, typename T>
 void sub_col(U &mat, size_t i, size_t j, T coeff) {
-    size_t n = mat.size();
-    for (size_t row = 0; row < n; row++) {
+    for (size_t row = 0, n = mat.size(); row < n; row++)
         mat[row][i] -= coeff * mat[row][j];
-    }
 }
 
 template <typename U, typename T>
 void mul_row(U &mat, size_t row, T value) {
-    size_t n = mat.size();
-    for (size_t col = 0; col < n; col++) {
+    for (size_t col = 0, n = mat.size(); col < n; col++)
         mat[row][col] *= value;
-    }
 }
 
 template <typename U, typename T>
 void mul_col(U &mat, size_t col, T value) {
-    size_t n = mat.size();
-    for (size_t row = 0; row < n; row++) {
+    for (size_t row = 0, n = mat.size(); row < n; row++)
         mat[row][col] *= value;
-    }
 }
 
 template <typename U, typename T>
 void div_row(U &mat, size_t row, T value) {
-    size_t n = mat.size();
-    for (size_t col = 0; col < n; col++) {
+    for (size_t col = 0, n = mat.size(); col < n; col++)
         mat[row][col] /= value;
-    }
 }
 
 template <typename U, typename T>
 void div_col(U &mat, size_t col, T value) {
-    size_t n = mat.size();
-    for (size_t row = 0; row < n; row++) {
+    for (size_t row = 0, n = mat.size(); row < n; row++)
         mat[row][col] /= value;
-    }
 }
 
 template <typename U, typename T>
 size_t max_row_elem_index(const U &mat, size_t row, size_t start) {
-    size_t n = mat.size();
     size_t index = start;
-    for (size_t col = start + 1; col < n; col++) {
+    for (size_t col = start + 1, n = mat.size(); col < n; col++) {
         if (std::abs(mat[row][col]) > std::abs(mat[row][index]))
             index = col;
     }
@@ -93,9 +85,8 @@ size_t max_row_elem_index(const U &mat, size_t row, size_t start) {
 
 template <typename U, typename T>
 size_t max_col_elem_index(const U &mat, size_t col, size_t start) {
-    size_t n = mat.size();
     size_t index = start;
-    for (size_t row = start + 1; row < n; row++) {
+    for (size_t row = start + 1, n = mat.size(); row < n; row++) {
         if (std::abs(mat[row][col]) > std::abs(mat[index][col]))
             index = row;
     }
@@ -105,7 +96,7 @@ size_t max_col_elem_index(const U &mat, size_t col, size_t start) {
 template <typename U>
 U minor(const U &mat, size_t row, size_t col) {
     size_t n = mat.size();
-    U res_mat{n - 1, {}};
+    U res_mat(n - 1);
 
     for (size_t i = 0; i < n - 1; i++) {
         for (size_t j = 0; j < n - 1; j++) {
@@ -121,7 +112,7 @@ U minor(const U &mat, size_t row, size_t col) {
 template <typename U>
 U mul(const U &mat1, const U &mat2) {
     size_t n = mat1.size();
-    U res_mat(n, {});
+    U res_mat(n);
 
     for (size_t i = 0; i < n; i++) { 
         for (size_t j = 0; j < n; j++) {
@@ -136,7 +127,7 @@ U mul(const U &mat1, const U &mat2) {
 template <typename U>
 U transpose(const U &mat) {
     size_t n = mat.size();
-    U res_mat(n, {});
+    U res_mat(n);
     for (size_t i = 0; i < n; i++) { 
         for (size_t j = 0; j < n; j++) {
             res_mat[i][j] = mat[j][i];
@@ -148,7 +139,7 @@ U transpose(const U &mat) {
 template <typename U>
 U neg(const U &mat) {
     size_t n = mat.size();
-    U res_mat(n, {});
+    U res_mat(n);
     res_mat = mat * (-1);
     return res_mat;
 }
@@ -166,15 +157,13 @@ template <typename U, typename T>
 T det_recursion(const U &mat) {
     size_t n = mat.size();
 
+    if (n == 1)
+        return mat[0][0];
     if (n == 0)
         return T{};
 
-    if (n == 1)
-        return mat[0][0];
-
-    U submat{n - 1, {}};
+    U submat(n - 1);
     T res{}, value{};
-
     for (size_t l = 0; l < n; l++) {
         submat = mat.minor(0, l);
         value = mat[0][l] * submat.det_recursion();
@@ -255,7 +244,7 @@ T det_bareiss(const U &src) {
 template <typename U, typename T>
 T det_lu(const U &src) {
     size_t n = src.size();
-    U l_mat{n, {}}, u_mat{n, {}};
+    U l_mat(n), u_mat(n);
 
     if (n == 0)
         return T{};
@@ -291,7 +280,7 @@ T det_lu(const U &src) {
 template <typename U, typename T>
 T det_cholesky(const U &src) {
     size_t n = src.size();
-    U l_mat{n, {}};
+    U l_mat(n);
 
     for (size_t i = 0; i < n; i++) {
         for (size_t j = 0; j < n; j++) {
@@ -326,6 +315,5 @@ T det_cholesky(const U &src) {
     return res;
 }
 
-}
-
-}
+} // namespace operations
+} // namespace mat

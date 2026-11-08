@@ -1,7 +1,8 @@
 #include "SqMatrixBf.hpp"
 #include "SqMatrixJg.hpp"
 #include <gtest/gtest.h>
-#include <vector>
+
+using namespace mat;
 
 TEST(SqMatrixBfRecursionTest, IntRecursionDetTest) {
     auto test = [](const SqMatrixBf<int> &mat_value,
