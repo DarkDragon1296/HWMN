@@ -19,7 +19,7 @@ SqMatrixBf<T> SqMatrixBf<T>::create_scalar(size_t n_, T value) {
 }
 
 template <typename T>
-SqMatrixBf<T> create_eye(size_t n_, T identity_value) {
+SqMatrixBf<T> SqMatrixBf<T>::create_eye(size_t n_, T identity_value) {
     SqMatrixBf<T> mat(n_);
     for (size_t i = 0; i < n_; i++)
         mat[i][i] = identity_value;

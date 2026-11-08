@@ -38,7 +38,7 @@ SqMatrixJg<T> SqMatrixJg<T>::create_scalar(size_t n_, T value) {
 }
 
 template <typename T>
-SqMatrixJg<T> create_eye(size_t n_, T identity_value) {
+SqMatrixJg<T> SqMatrixJg<T>::create_eye(size_t n_, T identity_value) {
     SqMatrixJg<T> mat(n_);
     for (size_t i = 0; i < n_; i++)
         mat[i][i] = identity_value;
