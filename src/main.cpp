@@ -16,13 +16,14 @@ int main(void) {
     SqMatrixJg<float> mat2(2, {1.0f, 2.0f,
                                2.0f, 5.0f});
 
-    SqMatrixBf<float> mat3(3, {1.0f, 2.0f, 3.0f,
-                               4.0f, 5.0f, 6.0f,
-                               7.0f, 8.0f, 9.0f});
+    SqMatrixBf<float> mat3(4, {-2.0f, -1.0f, -1.0f, -4.0f,
+                               -1.0f, -2.0f, -1.0f, -6.0f,
+                               -1.0f, -1.0f,  2.0f,  4.0f,
+                                2.0f,  1.0f, -3.0f, -8.0f});
 
     std::cout << mat2 << mat3;
 
-    float x = mat2.det_recursion();
+    float x = mat3.det_dodgson();
     std::cout << x << std::endl;
 
     return 0;

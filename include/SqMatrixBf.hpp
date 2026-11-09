@@ -71,6 +71,7 @@ class SqMatrixBf final {
     T det_bareiss  (void) const;
     T det_lu       (void) const;
     T det_cholesky (void) const;
+    T det_dodgson  (void) const;
 };
 
 template <typename T>

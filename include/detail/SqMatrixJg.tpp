@@ -258,4 +258,9 @@ T SqMatrixJg<T>::det_cholesky(void) const {
     return operations::det_cholesky<SqMatrixJg<T>, T>(*this);
 }
 
+template <typename T>
+T SqMatrixJg<T>::det_dodgson(void) const {
+    return operations::det_dodgson<SqMatrixJg<T>, T>(*this);
+}
+
 }

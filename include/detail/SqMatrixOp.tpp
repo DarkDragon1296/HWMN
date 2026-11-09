@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <cmath>
 #include <ostream>
 #include <type_traits>
@@ -325,6 +326,29 @@ T det_cholesky(const U &src) {
     res *= res;
 
     return res;
+}
+
+template <typename U, typename T>
+T det_dodgson(const U &src) {
+    size_t n = src.size();
+
+    std::cout << src[0][0] << " ";
+
+    if (n == 0)
+        return T{};
+    if (n == 1)
+        return src[0][0];
+
+    U mat(n - 1);
+
+    for (size_t i = 0; i < n - 1; i++) {
+        for (size_t j = 0; j < n - 1; j++) {
+            mat[i][j] = src[i][j] * src[i + 1][j + 1] -
+                        src[i][j + 1] * src[i + 1][j];
+        }
+    }
+
+    return mat.det_dodgson();
 }
 
 } // namespace operations

@@ -8,16 +8,16 @@ set(CMAKE_CXX_STANDARD 17)
 add_executable(${PROJECT_NAME})
 
 target_sources(
-  ${PROJECT_NAME}
+    ${PROJECT_NAME}
 
-  PRIVATE
-    buffer_matrix_test.cpp
+    PRIVATE
+        matrix_test.cpp vla_test.cpp
 )
 
 target_link_libraries(
-  ${PROJECT_NAME}
+    ${PROJECT_NAME}
 
-  PRIVATE
-    gtest
-    gtest_main
+    PRIVATE
+        gtest
+        gtest_main
 )
