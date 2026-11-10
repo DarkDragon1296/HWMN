@@ -2,6 +2,7 @@
 
 #include "VLA.hpp"
 #include "ext.hpp"
+#include <optional>
 #include <ostream>
 
 namespace mat {
@@ -19,7 +20,7 @@ class SqMatrixJg final {
     SqMatrixJg(size_t n_, std::initializer_list<T> values);
     static SqMatrixJg create_scalar(size_t n_, T value);
     static SqMatrixJg create_eye(size_t n_, T identity_value);
-
+    
     template <bool Constness>
     class ProxyRow {
         using It = std::conditional_t<Constness, 
@@ -59,6 +60,8 @@ class SqMatrixJg final {
     size_t max_row_elem_index(size_t row, size_t start) const;
     size_t max_col_elem_index(size_t col, size_t start) const;
 
+    std::optional<SqMatrixJg> submatrix(size_t sub_n, 
+                                        size_t row, size_t col) const;
     SqMatrixJg minor(size_t row, size_t col) const;
     SqMatrixJg mul(const SqMatrixJg &mat) const;
     SqMatrixJg transpose(void) const;

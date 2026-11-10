@@ -328,6 +328,7 @@ T det_cholesky(const U &src) {
     return res;
 }
 
+#if 0 // disabled so that it compiles
 template <typename U, typename T>
 T det_dodgson(const U &src) {
     U a_mat = src;
@@ -350,6 +351,7 @@ T det_dodgson(const U &src) {
 
     return det;
 }
+#endif
 
 } // namespace operations
 } // namespace mat

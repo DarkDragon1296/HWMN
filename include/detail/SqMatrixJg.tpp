@@ -209,6 +209,25 @@ size_t SqMatrixJg<T>::max_col_elem_index(size_t col, size_t start) const {
 }
 
 template <typename T>
+std::optional<SqMatrixJg<T>> 
+SqMatrixJg<T>::submatrix(size_t sub_n, size_t row, size_t col) const {
+    if (sub_n + std::max(row, col) > n)
+        return std::nullopt; // impossible to construct such submatrix
+    if (sub_n == n)
+        return *this;
+
+    SqMatrixJg<T> sub(sub_n);
+    if (sub_n == 0)
+        return sub;
+
+    for (size_t i_dst = 0, i_src = row; i_dst < sub_n; i_dst++, i_src++)
+        for (size_t j_dst = 0, j_src = col; j_dst < sub_n; j_dst++, j_src++)
+            sub[i_dst][j_dst] = (*this)[i_src][j_src];
+
+    return sub;
+}
+
+template <typename T>
 SqMatrixJg<T> SqMatrixJg<T>::minor(size_t row, size_t col) const {
     return operations::minor(*this, row, col);
 }
@@ -258,9 +277,11 @@ T SqMatrixJg<T>::det_cholesky(void) const {
     return operations::det_cholesky<SqMatrixJg<T>, T>(*this);
 }
 
+#if 0 //disable
 template <typename T>
 T SqMatrixJg<T>::det_dodgson(void) const {
     return operations::det_dodgson<SqMatrixJg<T>, T>(*this);
 }
+#endif
 
 }
