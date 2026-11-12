@@ -2,8 +2,8 @@
 
 #include "VLA.hpp"
 #include "ext.hpp"
-#include <optional>
 #include <ostream>
+#include <optional>
 
 namespace mat {
 

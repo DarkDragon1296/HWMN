@@ -3,6 +3,7 @@
 #include "VLA.hpp"
 #include "ext.hpp"
 #include <ostream>
+#include <optional>
 
 namespace mat {
 
@@ -60,6 +61,8 @@ class SqMatrixBf final {
     size_t max_row_elem_index(size_t row, size_t start) const;
     size_t max_col_elem_index(size_t col, size_t start) const;
 
+    std::optional<SqMatrixBf> submatrix(size_t sub_n, 
+                                        size_t row, size_t col) const;
     SqMatrixBf minor(size_t row, size_t col) const;
     SqMatrixBf mul(const SqMatrixBf &mat) const;
     SqMatrixBf transpose(void) const;

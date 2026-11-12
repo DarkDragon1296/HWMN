@@ -201,6 +201,12 @@ size_t SqMatrixBf<T>::max_col_elem_index(size_t col, size_t start) const {
 }
 
 template <typename T>
+std::optional<SqMatrixBf<T>> 
+SqMatrixBf<T>::submatrix(size_t sub_n, size_t row, size_t col) const {
+    return operations::submatrix<SqMatrixBf<T>, T>(*this, sub_n, row, col);
+}
+
+template <typename T>
 SqMatrixBf<T> SqMatrixBf<T>::minor(size_t row, size_t col) const {
     return operations::minor(*this, row, col);
 }

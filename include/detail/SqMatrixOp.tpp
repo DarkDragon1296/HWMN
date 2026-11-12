@@ -4,6 +4,7 @@
 #include <cmath>
 #include <ostream>
 #include <type_traits>
+#include <optional>
 
 namespace mat {
 namespace operations {
@@ -104,6 +105,25 @@ size_t max_col_elem_index(const U &mat, size_t col, size_t start) {
             index = row;
     }
     return index;
+}
+
+template <typename U, typename T>
+std::optional<U> submatrix(const U &mat, size_t sub_n, size_t row, size_t col) {
+    size_t n = mat.size();
+    if (sub_n + std::max(row, col) > n)
+        return std::nullopt; // impossible to construct such submatrix
+    if (sub_n == n)
+        return mat;
+
+    U sub(sub_n);
+    if (sub_n == 0)
+        return sub;
+
+    for (size_t i_dst = 0, i_src = row; i_dst < sub_n; i_dst++, i_src++)
+        for (size_t j_dst = 0, j_src = col; j_dst < sub_n; j_dst++, j_src++)
+            sub[i_dst][j_dst] = mat[i_src][j_src];
+
+    return sub;
 }
 
 template <typename U>
