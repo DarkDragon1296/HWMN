@@ -63,18 +63,24 @@ class SqMatrixBf final {
 
     std::optional<SqMatrixBf> submatrix(size_t sub_n, 
                                         size_t row, size_t col) const;
-    SqMatrixBf minor(size_t row, size_t col) const;
+    // Even though the term 'minor' means a determinant 
+    // of a certain kind of matrix constructed from the current one,
+    // this function returns the minor's matrix itself, not it's determinant. 
+    // If you want to, you
+    // can call a determinant member function on it
+    std::optional<SqMatrixBf> minor(size_t row, size_t col) const;
     SqMatrixBf mul(const SqMatrixBf &mat) const;
     SqMatrixBf transpose(void) const;
     SqMatrixBf neg(void) const;
     T tr(void) const;
 
-    T det_gauss    (void) const;
     T det_recursion(void) const;
     T det_bareiss  (void) const;
     T det_lu       (void) const;
-    T det_cholesky (void) const;
     T det_dodgson  (void) const;
+    // Gauss algorithm uses division, so it is adviced not to use it with
+    // integers
+    T det_gauss    (void) const;
 };
 
 template <typename T>
@@ -82,6 +88,9 @@ SqMatrixBf<T> operator+(const SqMatrixBf<T> lhs, const SqMatrixBf<T> &rhs);
 
 template <typename T>
 SqMatrixBf<T> operator-(const SqMatrixBf<T> lhs, const SqMatrixBf<T> &rhs);
+
+template <typename T>
+SqMatrixBf<T> operator-(const SqMatrixBf<T> lhs);
 
 template <typename T>
 SqMatrixBf<T> operator*(SqMatrixBf<T> lhs, 

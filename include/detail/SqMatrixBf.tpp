@@ -79,6 +79,11 @@ SqMatrixBf<T> operator-(SqMatrixBf<T> lhs, const SqMatrixBf<T> &rhs) {
 }
 
 template <typename T>
+SqMatrixBf<T> operator-(SqMatrixBf<T> lhs) {
+    return lhs.neg();
+}
+
+template <typename T>
 SqMatrixBf<T> operator*(SqMatrixBf<T> lhs, 
                         const ext::identity_type_t<T> &rhs) {
     lhs *= rhs;
@@ -207,7 +212,7 @@ SqMatrixBf<T>::submatrix(size_t sub_n, size_t row, size_t col) const {
 }
 
 template <typename T>
-SqMatrixBf<T> SqMatrixBf<T>::minor(size_t row, size_t col) const {
+std::optional<SqMatrixBf<T>> SqMatrixBf<T>::minor(size_t row, size_t col) const {
     return operations::minor(*this, row, col);
 }
 
@@ -251,11 +256,6 @@ T SqMatrixBf<T>::det_lu(void) const {
     return operations::det_lu<SqMatrixBf<T>, T>(*this);
 }
     
-template <typename T>
-T SqMatrixBf<T>::det_cholesky(void) const {
-    return operations::det_cholesky<SqMatrixBf<T>, T>(*this);
-}
-
 #if 0 //disable
 template <typename T>
 T SqMatrixBf<T>::det_dodgson(void) const {

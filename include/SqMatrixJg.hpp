@@ -62,18 +62,24 @@ class SqMatrixJg final {
 
     std::optional<SqMatrixJg> submatrix(size_t sub_n, 
                                         size_t row, size_t col) const;
-    SqMatrixJg minor(size_t row, size_t col) const;
+    // Even though the term 'minor' means a determinant 
+    // of a certain kind of matrix constructed from the current one,
+    // this function returns the minor's matrix itself, not it's determinant. 
+    // If you want to, you
+    // can call a determinant member function on it
+    std::optional<SqMatrixJg> minor(size_t row, size_t col) const;
     SqMatrixJg mul(const SqMatrixJg &mat) const;
     SqMatrixJg transpose(void) const;
     SqMatrixJg neg(void) const;
     T tr(void) const;
 
-    T det_gauss    (void) const;
     T det_recursion(void) const;
     T det_bareiss  (void) const;
     T det_lu       (void) const;
-    T det_cholesky (void) const;
     T det_dodgson  (void) const;
+    // Gauss algorithm uses division, so it is adviced not to use it with
+    // integers
+    T det_gauss    (void) const;
 };
 
 template <typename T>
@@ -81,6 +87,9 @@ SqMatrixJg<T> operator+(const SqMatrixJg<T> lhs, const SqMatrixJg<T> &rhs);
 
 template <typename T>
 SqMatrixJg<T> operator-(const SqMatrixJg<T> lhs, const SqMatrixJg<T> &rhs);
+
+template <typename T>
+SqMatrixJg<T> operator-(const SqMatrixJg<T> lhs);
 
 template <typename T>
 SqMatrixJg<T> operator*(SqMatrixJg<T> lhs, 

@@ -11,7 +11,8 @@ target_sources(
     ${PROJECT_NAME}
 
     PRIVATE
-        matrix_test.cpp vla_test.cpp
+        vla_test.cpp
+        matrix_test.cpp
 )
 
 target_link_libraries(

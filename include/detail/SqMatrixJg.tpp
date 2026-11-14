@@ -92,6 +92,11 @@ SqMatrixJg<T> operator-(SqMatrixJg<T> lhs, const SqMatrixJg<T> &rhs) {
 }
 
 template <typename T>
+SqMatrixJg<T> operator-(SqMatrixJg<T> lhs) {
+    return lhs.neg();
+}
+
+template <typename T>
 SqMatrixJg<T> operator*(SqMatrixJg<T> lhs, 
                         const ext::identity_type_t<T> &rhs) {
     lhs *= rhs;
@@ -215,7 +220,7 @@ SqMatrixJg<T>::submatrix(size_t sub_n, size_t row, size_t col) const {
 }
 
 template <typename T>
-SqMatrixJg<T> SqMatrixJg<T>::minor(size_t row, size_t col) const {
+std::optional<SqMatrixJg<T>> SqMatrixJg<T>::minor(size_t row, size_t col) const {
     return operations::minor(*this, row, col);
 }
 
@@ -259,11 +264,6 @@ T SqMatrixJg<T>::det_lu(void) const {
     return operations::det_lu<SqMatrixJg<T>, T>(*this);
 }
     
-template <typename T>
-T SqMatrixJg<T>::det_cholesky(void) const {
-    return operations::det_cholesky<SqMatrixJg<T>, T>(*this);
-}
-
 #if 0 //disable
 template <typename T>
 T SqMatrixJg<T>::det_dodgson(void) const {

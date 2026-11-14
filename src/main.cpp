@@ -12,6 +12,7 @@ template <typename T>
 std::ostream &operator<<(std::ostream &sink, SqMatrixJg<T> &mat);
 }
 
+// Do not look here! Look at the tests instead, this is just for our own usage
 int main(void) {
     SqMatrixJg<float> mat2(2, {1.0f, 2.0f,
                                2.0f, 5.0f});

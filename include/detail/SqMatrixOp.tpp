@@ -127,12 +127,16 @@ std::optional<U> submatrix(const U &mat, size_t sub_n, size_t row, size_t col) {
 }
 
 template <typename U>
-U minor(const U &mat, size_t row, size_t col) {
-    size_t n = mat.size();
-    U res_mat(n - 1);
+std::optional<U> minor(const U &mat, size_t row, size_t col) {
+    if (row >= mat.size() ||
+        col >= mat.size())
+        return std::nullopt; // impossible to construct such minor
 
-    for (size_t i = 0; i < n - 1; i++) {
-        for (size_t j = 0; j < n - 1; j++) {
+    size_t n = mat.size() - 1; // minor's size is 1 less
+    U res_mat(n);
+
+    for (size_t i = 0; i < n; i++) {
+        for (size_t j = 0; j < n; j++) {
             size_t is_col_skip = j >= col;
             size_t is_row_skip = i >= row;
             res_mat[i][j] = mat[i + is_row_skip][j + is_col_skip];
@@ -198,7 +202,7 @@ T det_recursion(const U &mat) {
     U submat(n - 1);
     T res{}, value{};
     for (size_t l = 0; l < n; l++) {
-        submat = mat.minor(0, l);
+        submat = mat.minor(0, l).value();
         value = mat[0][l] * submat.det_recursion();
         res += l % 2 ? -value : value;
     }
@@ -306,44 +310,6 @@ T det_lu(const U &src) {
     T res = u_mat[0][0];
     for (size_t i = 1; i < n; i++)
         res *= u_mat[i][i];
-
-    return res;
-}
-
-template <typename U, typename T>
-T det_cholesky(const U &src) {
-    size_t n = src.size();
-    U l_mat(n);
-
-    for (size_t i = 0; i < n; i++) {
-        for (size_t j = 0; j < n; j++) {
-            if (j > i) {
-                continue;
-            } else if (!i && !j) {
-                l_mat[0][0] = std::sqrt(src[0][0]);
-            } else if (!j) {
-                l_mat[i][0] = src[i][0] / l_mat[0][0];
-            } else if (i == j) {
-                l_mat[i][i] = src[i][i];
-                for (size_t k = 0; k <= i - 1; k++)
-                    l_mat[i][i] -= src[i][k] * src[i][k];
-                l_mat[i][i] = std::sqrt(l_mat[i][i]);
-
-                if (is_zero(l_mat[i][i]))
-                    return T{};
-            } else {
-                l_mat[i][j] = src[i][j];
-                for (size_t k = 0; k <= j - 1; k++)
-                    l_mat[i][j] -= src[i][k] * src[j][k];
-                l_mat[i][j] /= l_mat[j][j];
-            }
-        }
-    }
-
-    T res = l_mat[0][0];
-    for (size_t i = 1; i < n; i++)
-        res *= l_mat[i][i];
-    res *= res;
 
     return res;
 }

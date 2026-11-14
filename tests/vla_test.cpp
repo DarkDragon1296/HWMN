@@ -6,7 +6,8 @@ using namespace buffers;
 #define EXPECT_VLA(actual, ...) \
     expect_vla(actual, __VA_ARGS__, __FILE__, __LINE__)
 
-namespace {
+namespace { //anonymous
+
 template <typename T>
 void expect_vla(const VLA<T> &actual,
                 std::initializer_list<T> expected,
@@ -18,6 +19,7 @@ struct DefaultInitializable{
         return a == rhs.a;
     }
 };
+
 }
 
 TEST(VLATest, ConstructorsAndFactories) {
@@ -120,7 +122,8 @@ TEST(VLATest, CopyMoveAndAssignments) {
     }
 }
 
-namespace {
+namespace { //anonymous
+
 template <typename T>
 void expect_vla(const VLA<T> &actual, 
                 std::initializer_list<T> expected,
@@ -131,6 +134,7 @@ void expect_vla(const VLA<T> &actual,
     for (size_t i = 0, n = actual.size(); i < n; ++i, ++value)
         EXPECT_EQ(actual[i], *value) 
             << "at (" << i << ")\n"
-            << "called from " << file << ":" << line;
+            << "called from " << file << ":" << line;    
 }
+
 }
