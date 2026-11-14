@@ -314,30 +314,51 @@ T det_lu(const U &src) {
     return res;
 }
 
-#if 0 // disabled so that it compiles
 template <typename U, typename T>
 T det_dodgson(const U &src) {
     U a_mat = src;
     size_t n = a_mat.size();
-    T det = T{};
+    bool minus = false;
 
     if (n == 0)
         return T{};
 
-    for (size_t col_amount = n; col_amount > 1; j--) {
-        U d_mat{n - 1}
+    U b_mat{n - 1};
 
+    for (size_t l = n; l > 1; l--) {
+        if (is_zero(a_mat[1][1])) {
+            for (size_t i = 0; i < n; i++) {
+                if (!is_zero(a_mat[i][1])) {
+                    a_mat.swap_rows(1, i);
+                    minus = !minus;
+                }
+            }
+            if (is_zero(a_mat[1][1]))
+                return T{};
+        }
 
+        for (size_t j = 2; j < n; j++) {
+            if (is_zero(a_mat[1][j])) {
+                /* non zero line [1] */
+            }
+        }
 
+        for (size_t i = 2; i < n; i++) {
+            for (size_t j = 1; j < n; j++) {
+                /* non zero submat*/
+            }
+        }
 
-
-
-
+        for (size_t i = 0; i < n - 1; i++) {
+            for (size_t j = 0; j < n - 1; j++) {
+                b_mat[i][j] = a_mat[i][j] * a_mat[i + 1][j + 1]
+                            - a_mat[i][j + 1] * a_mat[i + 1][j];
+            }
+        }
     }
 
-    return det;
+    return a_mat[0][0];
 }
-#endif
 
 } // namespace operations
 } // namespace mat
