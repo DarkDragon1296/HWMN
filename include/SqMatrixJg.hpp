@@ -77,8 +77,8 @@ class SqMatrixJg final {
     T det_bareiss  (void) const;
     T det_lu       (void) const;
     T det_dodgson  (void) const;
-    // Gauss algorithm uses division, so it is adviced not to use it with
-    // integers
+    // Gauss algorithm uses division, 
+    // so it is adviced not to use it with integer types
     T det_gauss    (void) const;
 };
 
