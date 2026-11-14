@@ -7,7 +7,7 @@
 #   cmake -S ..
 #   cmake --build .
 # ----------------------------
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.13)
 
 # The project itself 
 # (sets a bunch of platform things under the hood,
@@ -23,8 +23,15 @@ include_directories(include)
 # This sets the build type to Debug if it hasn't been set
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "")
   set(CMAKE_BUILD_TYPE Debug)
+  set(BUILD_TESTS ON)
 endif()
-set(CMAKE_CXX_STANDARD 20)
+
+option(BUILD_TESTS "Build the test suite" OFF)
+if (BUILD_TESTS)
+    add_subdirectory(tests)
+endif()
+
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_FLAGS 
