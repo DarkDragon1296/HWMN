@@ -11,8 +11,7 @@ SqMatrixJg<T>::SqMatrixJg(size_t n_)
       data{buffers::VLA<T>::create(n_ * n_)},
       row_offsets{buffers::VLA<size_t>::create(n_)}
 {
-    for (size_t i = 0; i < n; i++)
-        row_offsets[i] = i * n;
+    init_row_offsets();
 }
 
 template <typename T>
@@ -22,18 +21,28 @@ SqMatrixJg<T>::SqMatrixJg(size_t n_,
       data(n_ * n_, values),
       row_offsets{buffers::VLA<size_t>::create(n_)}
 {
-    for (size_t i = 0; i < n; i++)
-        row_offsets[i] = i * n;
+    init_row_offsets();
 } 
+
+template <typename T>
+template <typename It>
+SqMatrixJg<T>::SqMatrixJg(size_t n_, It begin, It end) 
+    : n{n_}, 
+      data(n_ * n_, begin, end),
+      row_offsets{buffers::VLA<size_t>::create(n_)}
+{
+    init_row_offsets();
+}
 
 template <typename T>
 SqMatrixJg<T> SqMatrixJg<T>::create_scalar(size_t n_, T value) {
     SqMatrixJg<T> mat;
+
     mat.data = buffers::VLA<T>::create(n_ * n_, value);
     mat.row_offsets = buffers::VLA<size_t>::create(n_);
-    for (size_t i = 0; i < n_; i++)
-        mat.row_offsets[i] = i * n_;
     mat.n = n_;
+    mat.init_row_offsets();
+
     return mat;
 }
 
@@ -270,5 +279,11 @@ T SqMatrixJg<T>::det_dodgson(void) const {
     return operations::det_dodgson<SqMatrixJg<T>, T>(*this);
 }
 #endif
+
+template <typename T>
+inline void SqMatrixJg<T>::init_row_offsets() {
+    for (size_t i = 0; i < n; i++)
+        row_offsets[i] = i * n;
+}
 
 }

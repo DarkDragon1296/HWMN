@@ -110,6 +110,14 @@ void matrix_init_suite() {
         EXPECT_EQ(constant[0][1], 2);
     }
 
+    {
+        std::initializer_list<int> list = {1, 2, 3, 4};
+        EXPECT_MATRIX(Matrix(2, list.begin(), list.end()), 
+                       2, 
+                      {1, 2, 
+                       3, 4});
+    }
+
     EXPECT_MATRIX(Matrix::create_scalar(2, 5), 2, 
                   {5, 5, 
                    5, 5});

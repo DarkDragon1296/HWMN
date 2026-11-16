@@ -13,7 +13,7 @@ class VLA final {
     public: // Construstors
     VLA() = default;
 
-    /// Allocates n_ T's
+    /// Allocates n_ T's and tries to fill them with given values
     /// If (values.size() < n_) and T is default init-able, 
     ///     fills the rest with default values.
     /// If (values.size() < n_) and T isn't default init-able,
@@ -24,6 +24,17 @@ class VLA final {
     ///     please make sure that either T isnt compatible with size_t, 
     ///     or that you use the regular init (), not uniform init {}
     VLA(size_t n_, std::initializer_list<T> values); 
+
+    /// Allocates n_ T's and tries to fill them with the given range
+    /// Let distance = std::distance(begin, end);
+    /// If (distance < n_) and T is default init-able, 
+    ///     fills the rest with default values.
+    /// If (distance < n_) and T isn't default init-able,
+    ///     fills the rest with undetermined values. 
+    /// If (distance > n_),
+    ///     ignores the excessive values
+    template <typename It>
+    VLA(size_t n_, It begin, It end);
 
     /// Allocates exactly values.size() T's and copies them over
     VLA(std::initializer_list<T> values);

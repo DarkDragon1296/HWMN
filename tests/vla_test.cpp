@@ -30,6 +30,12 @@ TEST(VLATest, ConstructorsAndFactories) {
     }
 
     {
+        std::initializer_list<int> list = {1, 2, 3, 4, 5};
+        VLA<int> iterator_ctored(3, list.begin(), list.end());
+        EXPECT_VLA(iterator_ctored, {1, 2, 3});
+    }
+
+    {
         VLA<int> exact{1, 2, 3};
         EXPECT_VLA(exact, {1, 2, 3});
         exact[1] = 5;

@@ -6,24 +6,29 @@ namespace buffers {
 
 template <typename T>
 VLA<T>::VLA(size_t n_, std::initializer_list<T> values) 
-    : data{n_ ? new T[n_] : nullptr}, 
-      n{n_} 
-{
-    std::copy(values.begin(),
-              values.size() <= n ? values.end() : values.begin() + n,
-              data);
+    : VLA(n_, values.begin(), values.end()) {}
 
-    if (values.size() < n)
-        for (size_t i = values.size(); i < n; i++)
-            data[i] = T{};
-}
-
+// I refuse to make this a delegated constructor of (size_t, It, It) 
+// since it will waste time calculating the distance
 template <typename T>
 VLA<T>::VLA(std::initializer_list<T> values) 
     : data{values.size() ? new T[values.size()] : nullptr}, 
       n{values.size()} 
 {
     std::copy(values.begin(), values.end(), data);    
+}
+
+template <typename T>
+template <typename It>
+VLA<T>::VLA(size_t n_, It begin, It end) 
+    : data{n_ ? new T[n_] : nullptr}, 
+      n{n_} 
+{
+    ssize_t dist = std::distance(begin, end);
+    std::copy(begin,
+              (dist < 0 || 
+               static_cast<size_t>(dist) <= n) ? end : begin + n,
+              data);
 }
 
 template <typename T>

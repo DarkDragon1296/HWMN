@@ -11,13 +11,15 @@ template <typename T>
 class SqMatrixJg final {
     private:
     size_t n = 0;
-    buffers::VLA<T> data;
-    buffers::VLA<size_t> row_offsets;
+    buffers::VLA<T> data = {};
+    buffers::VLA<size_t> row_offsets = {};
 
     public:
     SqMatrixJg() = default;
     explicit SqMatrixJg(size_t n_);
     SqMatrixJg(size_t n_, std::initializer_list<T> values);
+    template <typename It>
+    SqMatrixJg(size_t n_, It begin, It end);
     static SqMatrixJg create_scalar(size_t n_, T value);
     static SqMatrixJg create_eye(size_t n_, T identity_value);
     
@@ -80,6 +82,9 @@ class SqMatrixJg final {
     // Gauss algorithm uses division, 
     // so it is adviced not to use it with integer types
     T det_gauss    (void) const;
+
+    private:
+    inline void init_row_offsets();
 };
 
 template <typename T>

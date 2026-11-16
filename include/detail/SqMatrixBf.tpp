@@ -34,6 +34,12 @@ SqMatrixBf<T>::SqMatrixBf(size_t n_,
       data(n_ * n_, values) {} // Fun fact! () matter here specifically
 
 template <typename T>
+template <typename It>
+SqMatrixBf<T>::SqMatrixBf(size_t n_, It begin, It end) 
+    : n{n_}, 
+      data(n_ * n_, begin, end) {}
+
+template <typename T>
 size_t SqMatrixBf<T>::size() const { 
     return n;
 }
