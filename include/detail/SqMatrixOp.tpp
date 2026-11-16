@@ -316,48 +316,62 @@ T det_lu(const U &src) {
 
 template <typename U, typename T>
 T det_dodgson(const U &src) {
-    U a_mat = src;
-    size_t n = a_mat.size();
+    U b_mat = src;
+    size_t n = b_mat.size();
     bool minus = false;
 
     if (n == 0)
         return T{};
 
-    U b_mat{n - 1};
+    U a_mat{n + 1};
+
+    for (size_t i = 0; i < n + 1; i++) {
+        for (size_t j = 0; j < n + 1; j++) {
+            a_mat[i][j] = static_cast<T>(1);
+        }
+    }
+
+    U c_mat{n - 1};
 
     for (size_t l = n; l > 1; l--) {
-        if (is_zero(a_mat[1][1])) {
+        if (is_zero(b_mat[1][1])) {
             for (size_t i = 0; i < n; i++) {
-                if (!is_zero(a_mat[i][1])) {
-                    a_mat.swap_rows(1, i);
+                if (!is_zero(b_mat[i][1])) {
+                    b_mat.swap_rows(1, i);
+                    a_mat.swap_rows(2, i + 1);
                     minus = !minus;
                 }
             }
-            if (is_zero(a_mat[1][1]))
+            if (is_zero(b_mat[1][1]))
                 return T{};
         }
 
         for (size_t j = 2; j < n; j++) {
-            if (is_zero(a_mat[1][j])) {
-                /* non zero line [1] */
+            if (is_zero(b_mat[1][j])) {
+                b_mat.add_col(j, 1, static_cast<T>(1));
             }
         }
 
         for (size_t i = 2; i < n; i++) {
-            for (size_t j = 1; j < n; j++) {
-                /* non zero submat*/
+            for (size_t k = 1; k < n; k++) {
+                for (size_t j = 1; j < n; j++) {
+                    if (is_zero(b_mat[i][j])) {
+                        b_mat.add_row(i, 1, static_cast<T>(1));
+                    }
+                }
             }
         }
 
         for (size_t i = 0; i < n - 1; i++) {
             for (size_t j = 0; j < n - 1; j++) {
-                b_mat[i][j] = a_mat[i][j] * a_mat[i + 1][j + 1]
-                            - a_mat[i][j + 1] * a_mat[i + 1][j];
+                c_mat[i][j] = b_mat[i][j] * b_mat[i + 1][j + 1]
+                            - b_mat[i][j + 1] * b_mat[i + 1][j]
+                            / a_mat[i + 1][j + 1];
             }
         }
     }
 
-    return a_mat[0][0];
+    return c_mat[0][0];
 }
 
 } // namespace operations
