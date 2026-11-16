@@ -33,7 +33,10 @@ int main(void) {
         return EXIT_FAILURE;
 
     Input &input = opt_input.value();
-    (void)input; //чето делать с инпутом
+    for (auto &mat : input.bfs) {
+        std::cout << mat << "\t \\delta = " 
+                  << mat.det_recursion() << std::endl;
+    }
         
     return EXIT_SUCCESS;
 }
