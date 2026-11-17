@@ -320,6 +320,7 @@ void matrix_det_suite() {
         EXPECT_FLOAT_EQ(mat.det_gauss(), result); 
         EXPECT_FLOAT_EQ(mat.det_bareiss(), result);
         EXPECT_FLOAT_EQ(mat.det_lu(), result);
+        EXPECT_FLOAT_EQ(mat.det_dodgson(), result);
     };
 
     test_det(Matrix(0, {}), 0);
