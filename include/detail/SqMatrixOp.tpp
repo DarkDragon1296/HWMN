@@ -6,8 +6,7 @@
 #include <type_traits>
 #include <optional>
 
-namespace mat {
-namespace operations {
+namespace mat::operations {
 
 static const double FLOAT_CMP_PRECISION = 1e-6;
 
@@ -380,5 +379,4 @@ T det_dodgson(const U &src) {
     return c_mat[0][0];
 }
 
-} // namespace operations
-} // namespace mat
+} // namespace mat::operations

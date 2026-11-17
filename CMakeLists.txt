@@ -74,4 +74,5 @@ target_sources(
 
   PRIVATE
     src/main.cpp
+    src/io.cpp
 )
