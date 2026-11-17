@@ -273,12 +273,10 @@ T SqMatrixJg<T>::det_lu(void) const {
     return operations::det_lu<SqMatrixJg<T>, T>(*this);
 }
     
-#if 0 //disable
 template <typename T>
 T SqMatrixJg<T>::det_dodgson(void) const {
     return operations::det_dodgson<SqMatrixJg<T>, T>(*this);
 }
-#endif
 
 template <typename T>
 inline void SqMatrixJg<T>::init_row_offsets() {
