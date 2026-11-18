@@ -261,10 +261,5 @@ template <typename T>
 T SqMatrixBf<T>::det_lu(void) const {
     return operations::det_lu<SqMatrixBf<T>, T>(*this);
 }
-    
-template <typename T>
-T SqMatrixBf<T>::det_dodgson(void) const {
-    return operations::det_dodgson<SqMatrixBf<T>, T>(*this);
-}
 
 }

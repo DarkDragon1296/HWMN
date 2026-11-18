@@ -274,11 +274,6 @@ T SqMatrixJg<T>::det_lu(void) const {
 }
     
 template <typename T>
-T SqMatrixJg<T>::det_dodgson(void) const {
-    return operations::det_dodgson<SqMatrixJg<T>, T>(*this);
-}
-
-template <typename T>
 inline void SqMatrixJg<T>::init_row_offsets() {
     for (size_t i = 0; i < n; i++)
         row_offsets[i] = i * n;
