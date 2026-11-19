@@ -1,3 +1,4 @@
+#include <chrono>
 #include "io.hpp"
 
 using namespace mat;
@@ -10,10 +11,17 @@ int main(void) {
         return EXIT_FAILURE;
 
     Input &input = opt_input.value();
+
+    auto start = std::chrono::steady_clock::now();
+
     for (auto &mat : input.bfs) {
         std::cout << mat << "\t \\delta = " 
-                  << mat.det_recursion() << std::endl;
+                  << mat.det_bareiss() << std::endl;
     }
-        
+
+    auto end = std::chrono::steady_clock::now();
+    std::chrono::duration<double, std::milli> duration = end - start;
+    std::cout << "( time = " << duration.count() << " ms )" << std::endl;
+
     return EXIT_SUCCESS;
 }
