@@ -1,5 +1,9 @@
 # HWMN
 
+Processor: 13th Gen Intel(R) Core(TM) i7-13650HX
+
+RAM: 15.3 GiB
+
 # Buffer data
 
 | Mat size | Recursion, ms | Gauss, ms | Bareiss, ms | LU, ms |
