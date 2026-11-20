@@ -12,16 +12,15 @@ int main(void) {
 
     Input &input = opt_input.value();
 
-    auto start = std::chrono::steady_clock::now();
+    for (auto &mat : input.jgs) {
+        auto start = std::chrono::steady_clock::now();
+        mat.det_lu();
+        auto end = std::chrono::steady_clock::now();
+        std::chrono::duration<double, std::milli> duration = end - start;
 
-    for (auto &mat : input.bfs) {
-        std::cout << mat << "\t \\delta = " 
-                  << mat.det_bareiss() << std::endl;
+        std::cout << "( [" << mat.size() << "] time = " << duration.count() << " ms )" << std::endl;
     }
 
-    auto end = std::chrono::steady_clock::now();
-    std::chrono::duration<double, std::milli> duration = end - start;
-    std::cout << "( time = " << duration.count() << " ms )" << std::endl;
 
     return EXIT_SUCCESS;
 }
