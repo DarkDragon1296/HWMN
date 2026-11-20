@@ -56,9 +56,41 @@
 | 55       |               | 7.347     | 13.53       | 8.411  |
 | 60       |               | 9.277     | 17.82       | 10.97  |
 
-# Approximation
+# Approximation constant
 
 |          | Recursion (n!), 10<sup>-3</sup> ms | Gauss (n<sup>3</sup>), 10<sup>-5</sup> ms | Bareiss (n<sup>3</sup>), 10<sup>-5</sup> ms | LU (n<sup>3</sup>), 10<sup>-5</sup> ms |
 | :------: | :-----------: | :-------: | :---------: | :----: |
 | Buffer   | 2.1           | 4.27      | 9.0         | 4.0    |
 | Jagged   | 3.3           | 4.30      | 8.1         | 5.1    |
+
+# Recursion (bf)
+
+![rec_bf](images/rec_bf.png)
+
+# Recursion (jg)
+
+![rec_jg](images/rec_jg.png)
+
+# Gauss (bf)
+
+![gauss_bf](images/gauss_bf.png)
+
+# Gauss (jg)
+
+![gauss_jg](images/gauss_jg.png)
+
+# Bareiss (bf)
+
+![bareiss_bf](images/bareiss_bf.png)
+
+# Bareiss (jg)
+
+![bareiss_jg](images/bareiss_jg.png)
+
+# LU (bf)
+
+![lu_bf](images/lu_bf.png)
+
+# LU (jg)
+
+![lu_jg](images/lu_jg.png)
